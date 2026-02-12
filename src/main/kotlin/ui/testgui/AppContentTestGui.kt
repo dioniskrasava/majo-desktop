@@ -2,11 +2,18 @@ package app.majodesk.ui.testgui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
@@ -18,11 +25,19 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Slider
 import androidx.compose.material.Surface
 import androidx.compose.material.Switch
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddBox
+import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Rectangle
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Email
@@ -37,7 +52,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
@@ -54,11 +72,13 @@ fun AppContentTestGui(){
             //TestGuiComponent003()
             //TestGuiComponent004()
             //TestGuiComponent005()
-            //TestGuiComponent006()     //canvas
-            TestGuiComponent007()     //canvas animation
-            //TestGuiComponent008()
-            //TestGuiComponent009()
-            //TestGuiComponent010()
+            //TestGuiComponent006()     // canvas
+            //TestGuiComponent007()     // canvas animation
+            //TestGuiComponent008()     // Рисование путей (Path):
+            //TestGuiComponent009()     // Кружок который бегает за кликом
+            //TestGuiComponent010()     // длинные списки
+            //TestGuiComponent011()     // вкладки
+            TestGui01()     // https://fonts.google.com/icons    КНОПКИ-ИКОНКИ
         }
     }
 }
@@ -209,17 +229,133 @@ fun TestGuiComponent007(){
     }
 }
 
-//
+//Рисование путей (Path):
+// Я ожидал немного другого конечно =)))
 @Composable
 fun TestGuiComponent008(){
+    Canvas(modifier = Modifier.size(200.dp)) {
+        val path = Path().apply {
+            moveTo(0f, 0f)
+            lineTo(100f, 50f)
+            quadraticBezierTo(150f, 0f, 200f, 100f)
+            close()
+        }
+
+        drawPath(
+            path = path,
+            color = Color.Cyan,
+            style = Stroke(width = 4f)
+        )
+    }
 }
 
 //
 @Composable
 fun TestGuiComponent009(){
+    var circlePosition by remember { mutableStateOf(Offset(100f, 100f)) }
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures { tapOffset ->
+                    circlePosition = tapOffset
+                }
+            }
+    ) {
+        drawCircle(
+            color = Color.Red,
+            radius = 50f,
+            center = circlePosition
+        )
+
+        // Можно добавить физику, коллизии и т.д.
+    }
 }
 
-//
+// Lazy-списки (для большого количества данных)
 @Composable
 fun TestGuiComponent010(){
+    val items = (1..1000).map { "Элемент $it" }
+
+    LazyColumn {
+        items(items) { item ->
+            Text(item, modifier = Modifier.padding(8.dp))
+        }
+    }
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3) // 3 колонки
+    ) {
+        items(items) { item ->
+            Card { Text(item) }
+        }
+    }
+}
+
+// вкладки
+@Composable
+fun TestGuiComponent011(){
+    var selectedTab by remember { mutableStateOf(0) }
+    val tabs = listOf("Вкладка 1", "Вкладка 2", "Вкладка 3")
+
+    Column {
+        TabRow(selectedTabIndex = selectedTab) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTab == index,
+                    onClick = { selectedTab = index },
+                    text = { Text(title) }
+                )
+            }
+        }
+
+        when (selectedTab) {
+            0 -> Text("Контент 1")
+            1 -> Text("Контент 2")
+            2 -> Text("Контент 3")
+        }
+    }
+}
+
+// кнопочки с иконками
+// иконки можно поглядеть тут  :  https://fonts.google.com/icons
+@Composable
+fun TestGui01() {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Rectangle, contentDescription = "Лайк")
+            }
+
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Check, contentDescription = "Лайк")
+            }
+
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Menu, contentDescription = "Лайк")
+            }
+
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Settings, contentDescription = "Лайк")
+            }
+
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Лайк")
+            }
+
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Apps, contentDescription = "Лайк")
+            }
+
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.AddBox, contentDescription = "Лайк")
+            }
+
+
+        }
+    }
 }

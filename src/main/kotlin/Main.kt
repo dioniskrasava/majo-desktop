@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import app.majodesk.ui.screens.MainScreen
 import app.majodesk.ui.testgui.AppContentTestGui
 
 fun main() = application {
@@ -23,22 +24,12 @@ fun main() = application {
         state = windowState                  // Размер и положение окна
     ) {
         MaterialTheme {
-            //AppContent()
-            AppContentTestGui()
+            //AppContentTestGui() // for testing different gui components desktop compose
+            MainScreen()
         }
     }
 }
 
-@Composable
-fun AppContent() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Hello new majo!")
-        }
-    }
-}
+
 
 
