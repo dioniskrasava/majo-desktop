@@ -16,6 +16,8 @@ import app.majodesk.ui.screens.MainScreen
 import app.majodesk.ui.testgui.AppContentTestGui
 
 fun main() = application {
+
+
     val windowState = rememberWindowState(width = 800.dp, height = 600.dp)
 
     Window(
