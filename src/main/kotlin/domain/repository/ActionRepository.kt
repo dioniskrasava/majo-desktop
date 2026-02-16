@@ -1,6 +1,6 @@
 package app.majodesk.domain.repository
 
-import app.majodesk.domain.model.Action
+import app.majodesk.domain.model.Act
 
 
 /**
@@ -8,7 +8,7 @@ import app.majodesk.domain.model.Action
  * который будет работать с активностями
  * */
 
-interface ActionRepository{
-    fun createAction()
-    fun getActionById(id: Int): Action?
+interface ActRepository{
+    fun createAct(act: Act)
+    fun getActById(id: Long): Act?
 }

@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -78,7 +80,8 @@ fun AppContentTestGui(){
             //TestGuiComponent009()     // Кружок который бегает за кликом
             //TestGuiComponent010()     // длинные списки
             //TestGuiComponent011()     // вкладки
-            TestGui01()     // https://fonts.google.com/icons    КНОПКИ-ИКОНКИ
+            //TestGui01()     // https://fonts.google.com/icons    КНОПКИ-ИКОНКИ
+            DropdownLIST()
         }
     }
 }
@@ -123,12 +126,14 @@ fun TestGuiComponent003(){
 
     var text by remember { mutableStateOf("") }
 
+    // ОБЫЧНОЕ ПОЛЕ ВВОДА
     TextField(
         value = text,
         onValueChange = { text = it },
         label = { Text("Введите текст") }
     )
 
+    // СКРЫТЫЕ СИВОЛЫ
     OutlinedTextField(
         value = text,
         onValueChange = { text = it },
@@ -355,6 +360,37 @@ fun TestGui01() {
                 Icon(Icons.Default.AddBox, contentDescription = "Лайк")
             }
 
+
+        }
+    }
+}
+
+
+
+@Composable
+fun DropdownLIST() {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            var expanded by remember { mutableStateOf(false) }
+
+            Button(onClick = { expanded = true }) {
+                Text("Options")
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(onClick = { /* Действие 1 */ expanded = false }) {
+                    Text("Option 1")
+                }
+                DropdownMenuItem(onClick = { /* Действие 2 */ expanded = false }) {
+                    Text("Option 2")
+                }
+            }
 
         }
     }

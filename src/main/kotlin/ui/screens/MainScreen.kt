@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import app.majodesk.ui.fragments.AddActField
 
 @Composable
 fun MainScreen() {
@@ -26,7 +27,7 @@ fun MainScreen() {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            AddActField()
         }
     }
 }
