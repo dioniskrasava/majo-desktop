@@ -1,120 +1,158 @@
 package app.majodesk.ui.fragments
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.Card
+import androidx.compose.material.Checkbox
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*        // основные компоненты
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActCategory
+import app.majodesk.domain.model.ActType
 
-/**
- * Карточка добавления активности
- * */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddActField(){
+fun AddActField(
+    onCreate: (Act) -> Unit
+) {
+    var name by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf(ActCategory.ANOTHER) }
+    var selectedType by remember { mutableStateOf(ActType.ACTION) }
+    var regularity by remember { mutableStateOf(true) }
 
-    /*
-    val id: Long,
-    val name: String,
-    val category: ActCategory = ActCategory.ANOTHER,
-    val type: ActType = ActType.ACTION,
-    val regularity: Boolean = true,
-    * */
+    var categoryExpanded by remember { mutableStateOf(false) }
+    var typeExpanded by remember { mutableStateOf(false) }
 
-    var name by remember { mutableStateOf("") } // состояние поля ввода названия
-    var selectedCategory by remember {mutableStateOf(ActCategory.ANOTHER)}
-
-
-    TextField(
-        value = name,
-        onValueChange = { name = it },
-        label = { Text("Введите название активности") }
-    )
-
-    DropdownMenuCustom()
-
-    ButtonAdd()
-
-
-}
-
-
-/**
- * Кнопка добавления активности
- * */
-@Composable
-fun ButtonAdd(){
-    Box(
+    Card(
         modifier = Modifier
-            .size(48.dp)
-            .shadow(8.dp, CircleShape)   // тень только на внешний бокс
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .clip(CircleShape)
-                .background(Color(0xFF5390A3))
-                .clickable { /* действие */ },
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Добавить",
-                tint = Color.White
+            Text(
+                text = "Новая активность",
+                style = MaterialTheme.typography.headlineSmall
             )
+
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Название") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Категория
+            ExposedDropdownMenuBox(
+                expanded = categoryExpanded,
+                onExpandedChange = { categoryExpanded = !categoryExpanded }
+            ) {
+                OutlinedTextField(
+                    value = selectedCategory.name,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Категория") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = categoryExpanded,
+                    onDismissRequest = { categoryExpanded = false }
+                ) {
+                    ActCategory.entries.forEach { category ->
+                        DropdownMenuItem(
+                            text = { Text(category.name) },
+                            onClick = {
+                                selectedCategory = category
+                                categoryExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            // Тип
+            ExposedDropdownMenuBox(
+                expanded = typeExpanded,
+                onExpandedChange = { typeExpanded = !typeExpanded }
+            ) {
+                OutlinedTextField(
+                    value = selectedType.name,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Тип") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = typeExpanded) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = typeExpanded,
+                    onDismissRequest = { typeExpanded = false }
+                ) {
+                    ActType.entries.forEach { type ->
+                        DropdownMenuItem(
+                            text = { Text(type.name) },
+                            onClick = {
+                                selectedType = type
+                                typeExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = regularity,
+                    onCheckedChange = { regularity = it }
+                )
+                Text("Регулярная активность")
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = {
+                        if (name.isNotBlank()) {
+                            val newAct = Act(
+                                id = System.currentTimeMillis(),
+                                name = name,
+                                category = selectedCategory,
+                                type = selectedType,
+                                regularity = regularity
+                            )
+                            onCreate(newAct)
+                            // Очистка
+                            name = ""
+                            selectedCategory = ActCategory.ANOTHER
+                            selectedType = ActType.ACTION
+                            regularity = true
+                        }
+                    },
+                    enabled = name.isNotBlank()
+                ) {
+                    Text("Добавить")
+                }
+            }
         }
     }
 }
-
-@Composable
-fun DropdownMenuCustom(){
-
-    var expanded by remember { mutableStateOf(false) }
-
-    Box {
-
-        Button(onClick = {expanded = true},
-            shape = RectangleShape,     // прямоугольная кнопка
-            colors = ButtonDefaults.buttonColors(
-                 Color(0xFF5390A3)   // цвет фона кнопки
-            ),
-            modifier = Modifier.padding(10.dp).background(Color(0xFF5390A3))
-        ){ Text("Button 1", fontSize = 28.sp) }
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            Text("Скопировать", fontSize=18.sp, modifier = Modifier.padding(10.dp))
-            Text("Вставить", fontSize=18.sp, modifier = Modifier.padding(10.dp))
-            Divider()
-            Text("Настройки", fontSize=18.sp, modifier = Modifier.padding(10.dp))
-        }
-    }
-}
-
