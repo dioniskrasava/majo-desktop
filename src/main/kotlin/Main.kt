@@ -13,8 +13,10 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import app.majodesk.cli.mainCli
+import app.majodesk.ui.AppSettings
 import app.majodesk.ui.screens.MainScreen
 import app.majodesk.ui.testgui.AppContentTestGui
+import java.awt.Dimension
 
 fun main() = application {
 
@@ -28,6 +30,12 @@ fun main() = application {
         title = "Majo Desktop",               // Заголовок окна
         state = windowState                  // Размер и положение окна
     ) {
+
+        window.minimumSize = Dimension(
+            AppSettings.MIN_WINDOW_WIDTH,
+            AppSettings.MIN_WINDOW_HEIGHT
+        )
+
         MaterialTheme {
             //AppContentTestGui() // for testing different gui components desktop compose
             MainScreen()

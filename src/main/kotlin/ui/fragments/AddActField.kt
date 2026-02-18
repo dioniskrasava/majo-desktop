@@ -31,12 +31,12 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.model.ActType
 import androidx.compose.ui.ExperimentalComposeUiApi
-import java.awt.Cursor
+import androidx.compose.ui.graphics.Color
 
 /**
  * Карточка для ввода данных новой активности.
- * @param onAddClick колбэк, вызываемый при нажатии кнопки "Добавить".
- *                   Возвращает введённые данные: название, категорию, тип, регулярность.
+ * @param onAddClick функция, которая будет вызвана при нажатии кнопки "Добавить"
+ *                   и получит введённые данные: название, категорию, тип и регулярность.
  */
 @Composable
 fun AddActCard(
@@ -92,6 +92,7 @@ fun AddActCard(
                 // isRegular = true
             }
         )
+
     }
 }
 
@@ -126,7 +127,7 @@ fun CategoryDropdown(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        onExpandedChange = { expanded = !expanded },
     ) {
         OutlinedTextField(
             value = selectedCategory.displayName,
@@ -136,8 +137,7 @@ fun CategoryDropdown(
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor() // связывает поле с меню
-                .fillMaxWidth()
-                .pointerHoverIcon(PointerIcon(Cursor(Cursor.HAND_CURSOR)))
+                .fillMaxWidth(),
         )
 
         ExposedDropdownMenu(
@@ -266,3 +266,4 @@ private val ActType.displayName: String
         ActType.HABIT -> "Привычка"
         ActType.VICE -> "Пороки"
     }
+
