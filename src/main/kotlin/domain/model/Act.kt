@@ -1,5 +1,7 @@
 package app.majodesk.domain.model
 
+import kotlinx.serialization.Serializable
+
 /**
  *
  * @param id Уникальный идентификатор.
@@ -8,6 +10,7 @@ package app.majodesk.domain.model
  * @param type Тип активности (действие, привычка, порок).
  * @param regularity Флаг регулярности.
  * */
+@Serializable
 data class Act(
     val id: Long,
     val name: String,
@@ -16,6 +19,7 @@ data class Act(
     val regularity: Boolean = true,
     )
 
+@Serializable
 enum class ActCategory{
     SPORT,
     EDUCATION,
@@ -23,6 +27,7 @@ enum class ActCategory{
 
 }
 
+@Serializable
 enum class ActType{
     ACTION,
     HABIT,

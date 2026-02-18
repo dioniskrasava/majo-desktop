@@ -20,7 +20,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation(compose.materialIconsExtended)
     implementation(compose.material3)
-
 }
 
 compose.desktop {
