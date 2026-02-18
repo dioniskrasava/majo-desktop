@@ -1,13 +1,14 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
-    id("org.jetbrains.compose") version "1.5.0"
-    kotlin("plugin.serialization") version "1.9.0"
+    kotlin("jvm") version "1.9.20"
+    id("org.jetbrains.compose") version "1.6.11"
+    kotlin("plugin.serialization") version "1.9.20"
 }
 
 group = "app.majodesk"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
@@ -18,7 +19,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation(compose.materialIconsExtended)
-    implementation("org.jetbrains.compose.material3:material3-desktop:1.6.11")
+    implementation(compose.material3)
 
 }
 
