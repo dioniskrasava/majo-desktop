@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Warning
@@ -27,12 +24,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
-import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.model.ActType
+import app.majodesk.ui.colorFromHex
+import app.majodesk.ui.iconFromName
 
 @Composable
 fun ActList(acts: List<Act>) {
@@ -74,11 +70,11 @@ fun ActCard(act: Act) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Иконка в зависимости от категории
+            // Иконка категории из её имени
             Icon(
-                imageVector = act.category.icon,
+                imageVector = iconFromName(act.category.iconName),
                 contentDescription = null,
-                tint = act.category.color,
+                tint = colorFromHex(act.category.colorHex),
                 modifier = Modifier.size(40.dp)
             )
 
@@ -93,12 +89,13 @@ fun ActCard(act: Act) {
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "Категория: ${act.category.displayName}",
+                    text = "Категория: ${act.category.name}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Иконка типа (ActType пока enum)
                     Icon(
                         imageVector = act.type.icon,
                         contentDescription = null,
@@ -125,28 +122,7 @@ fun ActCard(act: Act) {
     }
 }
 
-// Расширения для отображения и иконок
-private val ActCategory.displayName: String
-    get() = when (this) {
-        ActCategory.SPORT -> "Спорт"
-        ActCategory.EDUCATION -> "Образование"
-        ActCategory.ANOTHER -> "Другое"
-    }
-
-private val ActCategory.icon: ImageVector
-    get() = when (this) {
-        ActCategory.SPORT -> Icons.Default.FitnessCenter
-        ActCategory.EDUCATION -> Icons.Default.MenuBook
-        ActCategory.ANOTHER -> Icons.Default.Category
-    }
-
-private val ActCategory.color: Color
-    get() = when (this) {
-        ActCategory.SPORT -> Color(0xFF4CAF50)   // зелёный
-        ActCategory.EDUCATION -> Color(0xFF2196F3) // синий
-        ActCategory.ANOTHER -> Color(0xFF9E9E9E)   // серый
-    }
-
+// Расширения для ActType (остаются без изменений, так как тип пока enum)
 private val ActType.displayName: String
     get() = when (this) {
         ActType.ACTION -> "Действие"
@@ -154,7 +130,7 @@ private val ActType.displayName: String
         ActType.VICE -> "Порок"
     }
 
-private val ActType.icon: ImageVector
+private val ActType.icon: androidx.compose.ui.graphics.vector.ImageVector
     get() = when (this) {
         ActType.ACTION -> Icons.Default.CheckCircle
         ActType.HABIT -> Icons.Default.Repeat

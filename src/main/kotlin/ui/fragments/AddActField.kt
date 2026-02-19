@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,13 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.model.ActType
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.graphics.Color
+import app.majodesk.ui.colorFromHex
+import app.majodesk.ui.iconFromName
 
 /**
  * Карточка для ввода данных новой активности.
@@ -40,9 +41,10 @@ import androidx.compose.ui.graphics.Color
  */
 @Composable
 fun AddActCard(
+    categories: List<ActCategory>,
+    onAddCategoryClick: () -> Unit,
     onAddClick: (name: String, category: ActCategory, type: ActType, regularity: Boolean) -> Unit
 ) {
-    // Состояния полей
     var name by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(ActCategory.ANOTHER) }
     var selectedType by remember { mutableStateOf(ActType.ACTION) }
@@ -54,25 +56,20 @@ fun AddActCard(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Поле ввода названия
-        NameInput(
-            value = name,
-            onValueChange = { name = it }
-        )
+        NameInput(value = name, onValueChange = { name = it })
 
-        // Выпадающий список категорий
         CategoryDropdown(
             selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it }
+            onCategorySelected = { selectedCategory = it },
+            categories = categories,
+            onAddCategoryClick = onAddCategoryClick
         )
 
-        // Выпадающий список типов
         TypeDropdown(
             selectedType = selectedType,
             onTypeSelected = { selectedType = it }
         )
 
-        // Чекбокс регулярности
         RegularityCheckbox(
             checked = isRegular,
             onCheckedChange = { isRegular = it }
@@ -80,19 +77,17 @@ fun AddActCard(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Кнопка добавления
         AddButton(
             enabled = name.isNotBlank(),
             onClick = {
                 onAddClick(name, selectedCategory, selectedType, isRegular)
-                // Опционально: сброс полей после добавления
+                // Опционально сброс полей:
                 // name = ""
                 // selectedCategory = ActCategory.ANOTHER
                 // selectedType = ActType.ACTION
                 // isRegular = true
             }
         )
-
     }
 }
 
@@ -121,7 +116,9 @@ fun NameInput(
 @Composable
 fun CategoryDropdown(
     selectedCategory: ActCategory,
-    onCategorySelected: (ActCategory) -> Unit
+    onCategorySelected: (ActCategory) -> Unit,
+    categories: List<ActCategory>, // теперь список категорий
+    onAddCategoryClick: () -> Unit  // callback для открытия диалога добавления
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -130,29 +127,45 @@ fun CategoryDropdown(
         onExpandedChange = { expanded = !expanded },
     ) {
         OutlinedTextField(
-            value = selectedCategory.displayName,
+            value = selectedCategory.name,
             onValueChange = {},
             readOnly = true,
             label = { Text("Категория") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
-                .menuAnchor() // связывает поле с меню
-                .fillMaxWidth(),
+                .menuAnchor()
+                .fillMaxWidth()
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            ActCategory.values().forEach { category ->
+            // Сначала стандартные категории
+            categories.forEach { category ->
                 DropdownMenuItem(
-                    text = { Text(category.displayName) },
+                    text = { Text(category.name) },
                     onClick = {
                         onCategorySelected(category)
                         expanded = false
+                    },
+                    leadingIcon = {
+                        Icon(
+                            iconFromName(category.iconName),
+                            contentDescription = null,
+                            tint = colorFromHex(category.colorHex)
+                        )
                     }
                 )
             }
+            Divider()
+            DropdownMenuItem(
+                text = { Text("+ Добавить категорию") },
+                onClick = {
+                    expanded = false
+                    onAddCategoryClick()
+                }
+            )
         }
     }
 }
@@ -254,6 +267,7 @@ private val ActCategory.displayName: String
         //ActCategory.HOBBY -> "Хобби"
         //ActCategory.HEALTH -> "Здоровье"
         ActCategory.ANOTHER -> "Другое"
+        else -> {"ХЗ!!!"}
     }
 
 /**

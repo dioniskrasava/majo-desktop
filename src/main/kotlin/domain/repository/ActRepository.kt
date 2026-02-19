@@ -1,6 +1,7 @@
 package app.majodesk.domain.repository
 
 import app.majodesk.domain.model.Act
+import app.majodesk.domain.model.ActCategory
 
 
 /**
@@ -8,8 +9,10 @@ import app.majodesk.domain.model.Act
  * который будет работать с активностями
  * */
 
-interface ActRepository{
+interface ActRepository {
     fun createAct(act: Act)
     fun getActById(id: Long): Act?
     fun getAllActs(): List<Act>
+    fun getAllCategories(): List<ActCategory>   // новый метод
+    fun addCategory(category: ActCategory)      // новый метод
 }

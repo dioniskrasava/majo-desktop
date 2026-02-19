@@ -19,12 +19,18 @@ data class Act(
     val regularity: Boolean = true,
     )
 
+// Стандартные категории можно определить как константы в companion object
 @Serializable
-enum class ActCategory{
-    SPORT,
-    EDUCATION,
-    ANOTHER
-
+data class ActCategory(
+    val name: String,
+    val iconName: String = "default",   // например, "fitness_center", "menu_book", "category"
+    val colorHex: String = "#9E9E9E"    // цвет в формате #RRGGBB или #AARRGGBB
+) {
+    companion object {
+        val SPORT = ActCategory("Спорт", "fitness_center", "#4CAF50")
+        val EDUCATION = ActCategory("Образование", "menu_book", "#2196F3")
+        val ANOTHER = ActCategory("Другое", "category", "#9E9E9E")
+    }
 }
 
 @Serializable
