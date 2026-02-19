@@ -3,6 +3,7 @@ package app.majodesk.data.repository
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActCategory   // <-- добавить импорт
 import app.majodesk.domain.repository.ActRepository
+import app.majodesk.domain.repository.CategoryRepository
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -10,7 +11,7 @@ import java.io.File
 class FileActRepository(
     private val actsFile: File = File("acts.json"),
     private val categoriesFile: File = File("categories.json")
-) : ActRepository {
+) : ActRepository, CategoryRepository {
     private val actsMap = mutableMapOf<Long, Act>()
     private var nextId: Long = 0
     private var categories: MutableList<ActCategory> = mutableListOf()

@@ -13,6 +13,4 @@ interface ActRepository {
     fun createAct(act: Act)
     fun getActById(id: Long): Act?
     fun getAllActs(): List<Act>
-    fun getAllCategories(): List<ActCategory>   // новый метод
-    fun addCategory(category: ActCategory)      // новый метод
 }

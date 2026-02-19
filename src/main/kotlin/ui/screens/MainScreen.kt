@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.repository.ActRepository
+import app.majodesk.domain.repository.CategoryRepository
 import app.majodesk.ui.fragments.ActList
 import app.majodesk.ui.fragments.AddActCard
 import app.majodesk.ui.fragments.AddCategoryDialog // создайте этот компонент
 
 @Composable
-fun MainScreen(repository: ActRepository) {
+fun MainScreen(repository: ActRepository, categoryRepository: CategoryRepository) {
     var acts by remember { mutableStateOf(repository.getAllActs()) }
-    var categories by remember { mutableStateOf(repository.getAllCategories()) }
+    var categories by remember { mutableStateOf(categoryRepository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -52,8 +53,8 @@ fun MainScreen(repository: ActRepository) {
         AddCategoryDialog(
             onDismiss = { showAddCategoryDialog = false },
             onConfirm = { newCategory ->
-                repository.addCategory(newCategory)
-                categories = repository.getAllCategories() // обновляем список категорий
+                categoryRepository.addCategory(newCategory)
+                categories = categoryRepository.getAllCategories() // обновляем список категорий
                 showAddCategoryDialog = false
             }
         )
