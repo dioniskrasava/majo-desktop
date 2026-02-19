@@ -6,6 +6,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
+/**
+ * Класс, описывающий объект, который сможет сохранять активности в файл json
+ *
+ * */
 class FileActRepository(
     private val jsonFile: File = File("acts.json")
 ) : ActRepository {
@@ -29,7 +33,7 @@ class FileActRepository(
         return actsMap[id]
     }
 
-    fun getAllActs(): List<Act> = actsMap.values.toList()
+    override fun getAllActs(): List<Act> = actsMap.values.toList()
 
     // exists = существует
     private fun loadFromFile(){

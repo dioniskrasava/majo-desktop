@@ -11,4 +11,5 @@ import app.majodesk.domain.model.Act
 interface ActRepository{
     fun createAct(act: Act)
     fun getActById(id: Long): Act?
+    fun getAllActs(): List<Act>
 }
