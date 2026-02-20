@@ -17,9 +17,15 @@ import app.majodesk.domain.repository.CategoryRepository
 import app.majodesk.ui.fragments.ActList
 import app.majodesk.ui.fragments.AddActCard
 import app.majodesk.ui.fragments.AddCategoryDialog // создайте этот компонент
+import app.majodesk.ui.fragments.ThemeSwitch
+import app.majodesk.ui.theme.ThemeMode
 
 @Composable
-fun <T> MainScreen(repository: T) where T : ActRepository, T : CategoryRepository {
+fun <T> MainScreen(
+    repository: T,
+    themeMode: ThemeMode,                // текущий режим
+    onThemeToggle: () -> Unit            // действие при переключении
+) where T : ActRepository, T : CategoryRepository {
     var acts by remember { mutableStateOf(repository.getAllActs()) }
     var categories by remember { mutableStateOf(repository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
@@ -29,6 +35,10 @@ fun <T> MainScreen(repository: T) where T : ActRepository, T : CategoryRepositor
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            // Добавляем переключатель темы (например, в верхней части)
+            ThemeSwitch(themeMode = themeMode, onToggle = onThemeToggle)
+
             AddActCard(
                 categories = categories,
                 onAddCategoryClick = { showAddCategoryDialog = true },
