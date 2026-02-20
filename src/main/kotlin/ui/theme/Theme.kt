@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 fun appColorScheme(mode: ThemeMode): ColorScheme {
     return when (mode) {
         ThemeMode.LIGHT -> lightColorScheme(
-            primary = Color(0xFF238AD9),
+            primary = Color(0xFF59A4DC),
             secondary = Color(0xFF03DAC5),
             background = Color(0xFFFFFBFE),
             surface = Color(0xFFFFFBFE),
@@ -19,7 +19,7 @@ fun appColorScheme(mode: ThemeMode): ColorScheme {
             // остальные цвета можно не указывать — будут использованы значения по умолчанию
         )
         ThemeMode.DARK -> darkColorScheme(
-            primary = Color(0xFF5993DB),
+            primary = Color(0xFF092E5C),
             secondary = Color(0xFF03DAC5),
             background = Color(0xFF121212),
             surface = Color(0xFF0C1021),
