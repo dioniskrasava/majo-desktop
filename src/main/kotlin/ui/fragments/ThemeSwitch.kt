@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.majodesk.ui.localization.stringResource
 import app.majodesk.ui.theme.ThemeMode
 
 @Composable
@@ -21,7 +22,7 @@ fun ThemeSwitch(themeMode: ThemeMode, onToggle: () -> Unit) {
         horizontalArrangement = Arrangement.End
     ) {
         Text(
-            text = "Тёмная тема",
+            text = stringResource("theme_dark"),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(end = 8.dp)
         )

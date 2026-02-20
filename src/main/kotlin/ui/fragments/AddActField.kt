@@ -35,6 +35,7 @@ import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.model.ActType
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
+import app.majodesk.ui.localization.stringResource
 
 /**
  * Карточка для ввода данных новой активности.
@@ -59,91 +60,68 @@ fun AddActCard(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         NameInput(value = name, onValueChange = { name = it })
-
         CategoryDropdown(
             selectedCategory = selectedCategory,
             onCategorySelected = { selectedCategory = it },
             categories = categories,
             onAddCategoryClick = onAddCategoryClick
         )
-
         TypeDropdown(
             selectedType = selectedType,
             onTypeSelected = { selectedType = it }
         )
-
         RegularityCheckbox(
             checked = isRegular,
             onCheckedChange = { isRegular = it }
         )
-
         Spacer(modifier = Modifier.height(8.dp))
-
         AddButton(
             enabled = name.isNotBlank(),
             onClick = {
                 onAddClick(name, selectedCategory, selectedType, isRegular)
-                // Опционально сброс полей:
-                // name = ""
-                // selectedCategory = ActCategory.ANOTHER
-                // selectedType = ActType.ACTION
-                // isRegular = true
             }
         )
     }
 }
 
-/**
- * Поле ввода названия активности.
- */
 @Composable
-fun NameInput(
-    value: String,
-    onValueChange: (String) -> Unit
-) {
+fun NameInput(value: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text("Название активности") },
+        label = { Text(stringResource("activity_name")) },
         modifier = Modifier.fillMaxWidth(),
-        singleLine = true,
-        //isError = value.isBlank(), // показываем ошибку, если поле пустое
+        singleLine = true
     )
 }
 
-/**
- * Выпадающий список для выбора категории активности.
- */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDropdown(
     selectedCategory: ActCategory,
     onCategorySelected: (ActCategory) -> Unit,
-    categories: List<ActCategory>, // теперь список категорий
-    onAddCategoryClick: () -> Unit  // callback для открытия диалога добавления
+    categories: List<ActCategory>,
+    onAddCategoryClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = { expanded = !expanded }
     ) {
         OutlinedTextField(
             value = selectedCategory.name,
             onValueChange = {},
             readOnly = true,
-            label = { Text("Категория") },
+            label = { Text(stringResource("category")) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth()
         )
-
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            // Сначала стандартные категории
             categories.forEach { category ->
                 DropdownMenuItem(
                     text = { Text(category.name) },
@@ -162,7 +140,7 @@ fun CategoryDropdown(
             }
             Divider()
             DropdownMenuItem(
-                text = { Text("+ Добавить категорию") },
+                text = { Text(stringResource("add_category")) },
                 onClick = {
                     expanded = false
                     onAddCategoryClick()
@@ -172,9 +150,6 @@ fun CategoryDropdown(
     }
 }
 
-/**
- * Выпадающий список для выбора типа активности.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TypeDropdown(
@@ -182,29 +157,41 @@ fun TypeDropdown(
     onTypeSelected: (ActType) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
         OutlinedTextField(
-            value = selectedType.displayName,
+            value = stringResource(
+                when (selectedType) {
+                    ActType.ACTION -> "type_action"
+                    ActType.HABIT -> "type_habit"
+                    ActType.VICE -> "type_vice"
+                }
+            ),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Тип") },
+            label = { Text(stringResource("type")) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth()
         )
-
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
             ActType.values().forEach { type ->
                 DropdownMenuItem(
-                    text = { Text(type.displayName) },
+                    text = { Text(
+                        stringResource(
+                            when (type) {
+                                ActType.ACTION -> "type_action"
+                                ActType.HABIT -> "type_habit"
+                                ActType.VICE -> "type_vice"
+                            }
+                        )
+                    ) },
                     onClick = {
                         onTypeSelected(type)
                         expanded = false
@@ -215,14 +202,8 @@ fun TypeDropdown(
     }
 }
 
-/**
- * Чекбокс для указания регулярности активности.
- */
 @Composable
-fun RegularityCheckbox(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
+fun RegularityCheckbox(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
@@ -233,53 +214,19 @@ fun RegularityCheckbox(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Регулярная активность",
+            text = stringResource("regular"),
             style = MaterialTheme.typography.bodyLarge
         )
     }
 }
 
-/**
- * Кнопка добавления активности.
- * @param enabled активна ли кнопка (например, если название не пустое).
- */
 @Composable
-fun AddButton(
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
+fun AddButton(enabled: Boolean, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         enabled = enabled,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Добавить активность")
+        Text(stringResource("add_activity"))
     }
 }
-
-/**
- * Расширения для получения читаемого имени категории.
- */
-private val ActCategory.displayName: String
-    get() = when (this) {
-        ActCategory.SPORT -> "Спорт"
-        ActCategory.EDUCATION -> "Образование"
-        //ActCategory.WORK -> "Работа"
-        //ActCategory.STUDY -> "Учёба"
-        //ActCategory.HOBBY -> "Хобби"
-        //ActCategory.HEALTH -> "Здоровье"
-        ActCategory.ANOTHER -> "Другое"
-        else -> {"ХЗ!!!"}
-    }
-
-/**
- * Расширения для получения читаемого имени типа активности.
- */
-private val ActType.displayName: String
-    get() = when (this) {
-        ActType.ACTION -> "Действие"
-        //ActType.PROJECT -> "Проект"
-        ActType.HABIT -> "Привычка"
-        ActType.VICE -> "Пороки"
-    }
-

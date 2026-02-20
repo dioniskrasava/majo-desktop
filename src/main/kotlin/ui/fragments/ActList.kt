@@ -29,6 +29,7 @@ import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActType
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
+import app.majodesk.ui.localization.stringResource
 
 @Composable
 fun ActList(acts: List<Act>) {
@@ -38,7 +39,7 @@ fun ActList(acts: List<Act>) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Пока нет активностей.\nДобавьте первую!",
+                text = stringResource("no_activities"),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
@@ -70,17 +71,13 @@ fun ActCard(act: Act) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Иконка категории из её имени
             Icon(
                 imageVector = iconFromName(act.category.iconName),
                 contentDescription = null,
                 tint = colorFromHex(act.category.colorHex),
                 modifier = Modifier.size(40.dp)
             )
-
             Spacer(modifier = Modifier.width(16.dp))
-
-            // Информация об активности
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -89,13 +86,12 @@ fun ActCard(act: Act) {
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "Категория: ${act.category.name}",
+                    text = "${stringResource("category_label")} ${act.category.name}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Иконка типа (ActType пока enum)
                     Icon(
                         imageVector = act.type.icon,
                         contentDescription = null,
@@ -103,17 +99,21 @@ fun ActCard(act: Act) {
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = act.type.displayName,
+                        text = stringResource(
+                            when (act.type) {
+                                ActType.ACTION -> "type_action"
+                                ActType.HABIT -> "type_habit"
+                                ActType.VICE -> "type_vice"
+                            }
+                        ),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
-
-            // Индикатор регулярности
             if (act.regularity) {
                 Icon(
                     imageVector = Icons.Default.Repeat,
-                    contentDescription = "Регулярная",
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )
@@ -122,14 +122,7 @@ fun ActCard(act: Act) {
     }
 }
 
-// Расширения для ActType (остаются без изменений, так как тип пока enum)
-private val ActType.displayName: String
-    get() = when (this) {
-        ActType.ACTION -> "Действие"
-        ActType.HABIT -> "Привычка"
-        ActType.VICE -> "Порок"
-    }
-
+// Удаляем старый extension ActType.displayName, оставляем только icon
 private val ActType.icon: androidx.compose.ui.graphics.vector.ImageVector
     get() = when (this) {
         ActType.ACTION -> Icons.Default.CheckCircle

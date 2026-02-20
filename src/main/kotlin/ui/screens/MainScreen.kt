@@ -34,6 +34,7 @@ import app.majodesk.ui.fragments.ActList
 import app.majodesk.ui.fragments.AddActCard
 import app.majodesk.ui.fragments.AddCategoryDialog // создайте этот компонент
 import app.majodesk.ui.fragments.ThemeSwitch
+import app.majodesk.ui.localization.stringResource
 import app.majodesk.ui.navigation.Screen
 import app.majodesk.ui.theme.ThemeMode
 
@@ -66,19 +67,19 @@ fun <T> MainScreen(
                 selected = currentScreen == Screen.Activities,
                 onClick = { currentScreen = Screen.Activities },
                 icon = { Icon(Icons.Default.List, contentDescription = "Активности") },
-                label = { Text("Активности") }
+                label = { Text(stringResource("activities")) }
             )
             NavigationRailItem(
                 selected = currentScreen == Screen.Statistics,
                 onClick = { currentScreen = Screen.Statistics },
                 icon = { Icon(Icons.Default.ShowChart, contentDescription = "Статистика") },
-                label = { Text("Статистика") }
+                label = { Text(stringResource("statistics")) }
             )
             NavigationRailItem(
                 selected = currentScreen == Screen.Settings,
                 onClick = { currentScreen = Screen.Settings },
                 icon = { Icon(Icons.Default.Settings, contentDescription = "Настройки") },
-                label = { Text("Настройки") }
+                label = { Text(stringResource("settings")) }
             )
         }
 

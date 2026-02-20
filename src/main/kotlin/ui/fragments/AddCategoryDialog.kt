@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
+import app.majodesk.ui.localization.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,47 +39,40 @@ fun AddCategoryDialog(
     var selectedIconName by remember { mutableStateOf("category") }
     var selectedColorHex by remember { mutableStateOf("#9E9E9E") }
 
-    // Список доступных иконок (имя → отображаемое имя)
+    // Пары (имя иконки, ключ локализации)
     val iconOptions = listOf(
-        "fitness_center" to "Спорт",
-        "menu_book" to "Образование",
-        "category" to "Категория",
-        "sports_tennis" to "Теннис"
-        // можно добавить другие иконки, если они есть в iconFromName
+        "fitness_center" to "icon_fitness_center",
+        "menu_book" to "icon_menu_book",
+        "category" to "icon_category",
+        "sports_tennis" to "icon_sports_tennis"
     )
-
-    // Список предопределённых цветов (hex → название)
+    // Пары (hex, ключ локализации)
     val colorOptions = listOf(
-        "#4CAF50" to "Зелёный",
-        "#2196F3" to "Синий",
-        "#9E9E9E" to "Серый",
-        "#F44336" to "Красный",
-        "#FFC107" to "Жёлтый",
-        "#9C27B0" to "Фиолетовый"
+        "#4CAF50" to "color_green",
+        "#2196F3" to "color_blue",
+        "#9E9E9E" to "color_grey",
+        "#F44336" to "color_red",
+        "#FFC107" to "color_yellow",
+        "#9C27B0" to "color_purple"
     )
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Новая категория") },
+        title = { Text(stringResource("new_category")) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                // Поле для названия
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Название") },
+                    label = { Text(stringResource("name")) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
-
-                // Выбор иконки
                 IconDropdown(
                     selectedIconName = selectedIconName,
                     onIconSelected = { selectedIconName = it },
                     iconOptions = iconOptions
                 )
-
-                // Выбор цвета
                 ColorDropdown(
                     selectedColorHex = selectedColorHex,
                     onColorSelected = { selectedColorHex = it },
@@ -95,12 +89,12 @@ fun AddCategoryDialog(
                 },
                 enabled = name.isNotBlank()
             ) {
-                Text("Добавить")
+                Text(stringResource("add"))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена")
+                Text(stringResource("cancel"))
             }
         }
     )
@@ -114,16 +108,15 @@ fun IconDropdown(
     iconOptions: List<Pair<String, String>>
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
         OutlinedTextField(
-            value = iconOptions.find { it.first == selectedIconName }?.second ?: "",
+            value = stringResource(iconOptions.find { it.first == selectedIconName }?.second ?: "icon_category"),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Иконка") },
+            label = { Text(stringResource("icon")) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             leadingIcon = {
                 Icon(
@@ -140,9 +133,9 @@ fun IconDropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            iconOptions.forEach { (iconName, displayName) ->
+            iconOptions.forEach { (iconName, displayKey) ->
                 DropdownMenuItem(
-                    text = { Text(displayName) },
+                    text = { Text(stringResource(displayKey)) },
                     onClick = {
                         onIconSelected(iconName)
                         expanded = false
@@ -168,16 +161,15 @@ fun ColorDropdown(
     colorOptions: List<Pair<String, String>>
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
         OutlinedTextField(
-            value = colorOptions.find { it.first == selectedColorHex }?.second ?: "",
+            value = stringResource(colorOptions.find { it.first == selectedColorHex }?.second ?: "color_grey"),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Цвет") },
+            label = { Text(stringResource("color")) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             leadingIcon = {
                 Box(
@@ -195,9 +187,9 @@ fun ColorDropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            colorOptions.forEach { (colorHex, colorName) ->
+            colorOptions.forEach { (colorHex, displayKey) ->
                 DropdownMenuItem(
-                    text = { Text(colorName) },
+                    text = { Text(stringResource(displayKey)) },
                     onClick = {
                         onColorSelected(colorHex)
                         expanded = false
