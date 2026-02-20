@@ -107,7 +107,7 @@ fun NameInput(
         label = { Text("Название активности") },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
-        isError = value.isBlank(), // показываем ошибку, если поле пустое
+        //isError = value.isBlank(), // показываем ошибку, если поле пустое
     )
 }
 
