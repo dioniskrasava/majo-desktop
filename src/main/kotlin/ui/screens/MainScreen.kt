@@ -19,9 +19,9 @@ import app.majodesk.ui.fragments.AddActCard
 import app.majodesk.ui.fragments.AddCategoryDialog // создайте этот компонент
 
 @Composable
-fun MainScreen(repository: ActRepository, categoryRepository: CategoryRepository) {
+fun <T> MainScreen(repository: T) where T : ActRepository, T : CategoryRepository {
     var acts by remember { mutableStateOf(repository.getAllActs()) }
-    var categories by remember { mutableStateOf(categoryRepository.getAllCategories()) }
+    var categories by remember { mutableStateOf(repository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -53,8 +53,8 @@ fun MainScreen(repository: ActRepository, categoryRepository: CategoryRepository
         AddCategoryDialog(
             onDismiss = { showAddCategoryDialog = false },
             onConfirm = { newCategory ->
-                categoryRepository.addCategory(newCategory)
-                categories = categoryRepository.getAllCategories() // обновляем список категорий
+                repository.addCategory(newCategory)
+                categories = repository.getAllCategories() // обновляем список категорий
                 showAddCategoryDialog = false
             }
         )

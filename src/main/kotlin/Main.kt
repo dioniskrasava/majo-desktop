@@ -27,7 +27,7 @@ fun main() = application {
         )
 
         MaterialTheme {
-            MainScreen(actRepository, actRepository)
+            MainScreen(actRepository)
         }
     }
 }
