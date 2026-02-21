@@ -1,5 +1,6 @@
 package app.majodesk.ui.fragments
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -69,6 +70,7 @@ fun ActList(
     }
 }
 
+
 @Composable
 fun ActCard(
     act: Act,
@@ -107,6 +109,7 @@ fun ActCard(
                     text = "${stringResource("category_label")} ${act.category.name}",
                     style = MaterialTheme.typography.bodyMedium
                 )
+                // Объединённая строка для типа и регулярности
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -116,7 +119,6 @@ fun ActCard(
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-
                     Text(
                         text = stringResource(
                             when (act.type) {
@@ -127,26 +129,21 @@ fun ActCard(
                         ),
                         style = MaterialTheme.typography.bodyMedium
                     )
-
-                }
-                if (act.regularity) {
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    if (act.regularity) {
+                        Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             imageVector = Icons.Default.Repeat,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            //modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(16.dp) // согласованный размер
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = stringResource("regular"),
+                            text = stringResource("regular(short)"), // добавьте ключ в локализацию
                             style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
-
                 }
             }
 
