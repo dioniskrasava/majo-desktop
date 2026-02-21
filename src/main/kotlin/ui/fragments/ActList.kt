@@ -15,11 +15,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +36,11 @@ import app.majodesk.ui.iconFromName
 import app.majodesk.ui.localization.stringResource
 
 @Composable
-fun ActList(acts: List<Act>) {
+fun ActList(
+    acts: List<Act>,
+    onEditClick: (Act) -> Unit,
+    onDeleteClick: (Act) -> Unit,
+) {
     if (acts.isEmpty()) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -52,14 +59,23 @@ fun ActList(acts: List<Act>) {
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(acts) { act ->
-                ActCard(act)
+                ActCard(
+                    act,
+                    onEditClick,
+                    onDeleteClick
+                )
             }
         }
     }
 }
 
 @Composable
-fun ActCard(act: Act) {
+fun ActCard(
+    act: Act,
+    onEditClick: (Act) -> Unit,
+    onDeleteClick: (Act) -> Unit
+
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -100,6 +116,7 @@ fun ActCard(act: Act) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
+
                     Text(
                         text = stringResource(
                             when (act.type) {
@@ -110,14 +127,47 @@ fun ActCard(act: Act) {
                         ),
                         style = MaterialTheme.typography.bodyMedium
                     )
+
+                }
+                if (act.regularity) {
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Repeat,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            //modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource("regular"),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+
                 }
             }
-            if (act.regularity) {
+
+
+            // Кнопка редактирования
+            IconButton(onClick = { onEditClick(act) }) {
                 Icon(
-                    imageVector = Icons.Default.Repeat,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Редактировать",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            // Кнопка удаления
+            IconButton(onClick = { onDeleteClick(act) }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Удалить",
+                    tint = MaterialTheme.colorScheme.error
                 )
             }
         }

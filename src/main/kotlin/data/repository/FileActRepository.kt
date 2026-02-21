@@ -96,4 +96,23 @@ class FileActRepository(
             println("Ошибка сохранения категорий: ${e.message}")
         }
     }
+
+    override fun updateAct(act: Act) {
+        if (actsMap.containsKey(act.id)) {
+            actsMap[act.id] = act
+            saveActs()
+            println("Активность обновлена: $act")
+        } else {
+            println("Ошибка: активность с id ${act.id} не найдена")
+        }
+    }
+
+    override fun deleteAct(id: Long) {
+        if (actsMap.remove(id) != null) {
+            saveActs()
+            println("Активность с id $id удалена")
+        } else {
+            println("Ошибка: активность с id $id не найдена")
+        }
+    }
 }

@@ -11,6 +11,7 @@ import app.majodesk.domain.repository.CategoryRepository
 import app.majodesk.ui.fragments.ActList
 import app.majodesk.ui.fragments.AddActCard
 import app.majodesk.ui.fragments.AddCategoryDialog
+import app.majodesk.ui.fragments.EditActDialog
 
 @Composable
 fun <T> ActivitiesScreen(
@@ -20,6 +21,7 @@ fun <T> ActivitiesScreen(
     var acts by remember { mutableStateOf(repository.getAllActs()) }
     var categories by remember { mutableStateOf(repository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
+    var actToEdit by remember { mutableStateOf<Act?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -40,7 +42,14 @@ fun <T> ActivitiesScreen(
                 acts = repository.getAllActs()
             }
         )
-        ActList(acts = acts)
+        ActList(
+            acts = acts,
+            onEditClick = { act -> actToEdit = act },          // открыть диалог редактирования
+            onDeleteClick = { act ->
+                repository.deleteAct(act.id)
+                acts = repository.getAllActs()
+            }
+        )
     }
 
     if (showAddCategoryDialog) {
@@ -50,6 +59,20 @@ fun <T> ActivitiesScreen(
                 repository.addCategory(newCategory)
                 categories = repository.getAllCategories()
                 showAddCategoryDialog = false
+            }
+        )
+    }
+
+    // Диалог редактирования активности
+    if (actToEdit != null) {
+        EditActDialog(
+            act = actToEdit!!,
+            categories = categories,
+            onDismiss = { actToEdit = null },
+            onConfirm = { updatedAct ->
+                repository.updateAct(updatedAct)
+                acts = repository.getAllActs()
+                actToEdit = null
             }
         )
     }

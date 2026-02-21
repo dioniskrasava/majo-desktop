@@ -13,4 +13,6 @@ interface ActRepository {
     fun createAct(act: Act)
     fun getActById(id: Long): Act?
     fun getAllActs(): List<Act>
+    fun updateAct(act: Act)
+    fun deleteAct(id: Long)
 }
