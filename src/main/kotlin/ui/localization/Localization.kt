@@ -70,7 +70,9 @@ private val ru = mapOf(
     "color_grey" to "Серый",
     "color_red" to "Красный",
     "color_yellow" to "Жёлтый",
-    "color_purple" to "Фиолетовый"
+    "color_purple" to "Фиолетовый",
+    "save" to "Сохранить",
+    "edit_activity" to "Редактировать активность"
 )
 
 private val en = mapOf(
@@ -109,5 +111,7 @@ private val en = mapOf(
     "color_grey" to "Grey",
     "color_red" to "Red",
     "color_yellow" to "Yellow",
-    "color_purple" to "Purple"
+    "color_purple" to "Purple",
+    "save" to "Save",
+    "edit_activity" to "Edit activity"
 )

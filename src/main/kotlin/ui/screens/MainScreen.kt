@@ -60,8 +60,8 @@ fun <T> MainScreen(
                 color = MaterialTheme.colorScheme.outlineVariant,
                 shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp, topStart = 8.dp, bottomStart = 8.dp),
             ),
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.surfaceVariant, // вместо primary
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant, // если нужно
         ) {
             NavigationRailItem(
                 selected = currentScreen == Screen.Activities,

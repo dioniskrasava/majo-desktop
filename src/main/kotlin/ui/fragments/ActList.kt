@@ -109,7 +109,8 @@ fun ActCard(
                     text = "${stringResource("category_label")} ${act.category.name}",
                     style = MaterialTheme.typography.bodyMedium
                 )
-                // Объединённая строка для типа и регулярности
+
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -135,11 +136,11 @@ fun ActCard(
                             imageVector = Icons.Default.Repeat,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp) // согласованный размер
+                            modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = stringResource("regular(short)"), // добавьте ключ в локализацию
+                            text = stringResource("regular(short)"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -148,7 +149,6 @@ fun ActCard(
             }
 
 
-            // Кнопка редактирования
             IconButton(onClick = { onEditClick(act) }) {
                 Icon(
                     imageVector = Icons.Default.Edit,
@@ -159,7 +159,6 @@ fun ActCard(
 
             Spacer(modifier = Modifier.width(4.dp))
 
-            // Кнопка удаления
             IconButton(onClick = { onDeleteClick(act) }) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -171,7 +170,7 @@ fun ActCard(
     }
 }
 
-// Удаляем старый extension ActType.displayName, оставляем только icon
+
 private val ActType.icon: androidx.compose.ui.graphics.vector.ImageVector
     get() = when (this) {
         ActType.ACTION -> Icons.Default.CheckCircle

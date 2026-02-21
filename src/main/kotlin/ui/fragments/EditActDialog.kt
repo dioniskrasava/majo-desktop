@@ -37,7 +37,7 @@ fun EditActDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Редактировать активность") }, // можно добавить в ресурсы
+        title = { Text(stringResource("edit_activity")) }, // можно добавить в ресурсы
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
@@ -77,7 +77,7 @@ fun EditActDialog(
                 },
                 enabled = name.isNotBlank()
             ) {
-                Text("Сохранить") // можно вынести в ресурсы
+                Text(stringResource("save")) // можно вынести в ресурсы
             }
         },
         dismissButton = {
