@@ -38,7 +38,8 @@ import app.majodesk.ui.localization.stringResource
 import app.majodesk.domain.model.DistanceUnit
 import app.majodesk.domain.model.WeightUnit
 import app.majodesk.domain.model.TimeUnit
-import app.majodesk.ui.theme.Dimens.marginElements
+import app.majodesk.ui.theme.Dimens
+
 
 @Composable
 fun ActList(
@@ -61,7 +62,7 @@ fun ActList(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(marginElements)
+            contentPadding = PaddingValues(Dimens.marginElements)
         ) {
             items(acts) { act ->
                 ActCard(
@@ -99,7 +100,7 @@ fun ActCard(
                 imageVector = iconFromName(act.category.iconName),
                 contentDescription = null,
                 tint = colorFromHex(act.category.colorHex),
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(Dimens.iconLarge)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(
@@ -121,7 +122,7 @@ fun ActCard(
                     Icon(
                         imageVector = act.type.icon,
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(Dimens.iconSmall)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -140,7 +141,7 @@ fun ActCard(
                             imageVector = Icons.Default.Repeat,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(Dimens.iconSmall)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
@@ -190,6 +191,8 @@ private val ActType.icon: androidx.compose.ui.graphics.vector.ImageVector
         ActType.VICE -> Icons.Default.Warning
     }
 
+
+// НЕ ЛОКАЛИЗОВАНО!!! И НЕ ЛОКАЛИЗОВАНЫ 3 ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ НИЖЕ !!!
 /** Вспомогательная ф-я для отображения метрик*/
 fun formatMetric(metric: Metric): String {
     return when (metric) {
@@ -201,17 +204,17 @@ fun formatMetric(metric: Metric): String {
 }
 
 private fun unitString(unit: DistanceUnit): String = when (unit) {
-    DistanceUnit.KILOMETER -> "км"
-    DistanceUnit.METER -> "м"
+    DistanceUnit.KILOMETER -> "километр"
+    DistanceUnit.METER -> "метр"
 }
 
 private fun unitString(unit: WeightUnit): String = when (unit) {
-    WeightUnit.KILOGRAM -> "кг"
-    WeightUnit.TON -> "т"
+    WeightUnit.KILOGRAM -> "килограмм"
+    WeightUnit.TON -> "тонну"
 }
 
 private fun unitString(unit: TimeUnit): String = when (unit) {
-    TimeUnit.HOUR -> "ч"
+    TimeUnit.HOUR -> "час"
     TimeUnit.MINUTE -> "мин"
     TimeUnit.SECOND -> "сек"
 }

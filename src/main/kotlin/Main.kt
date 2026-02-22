@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
@@ -20,7 +19,7 @@ import app.majodesk.ui.theme.appColorScheme
 import java.awt.Dimension
 
 fun main() = application {
-    val windowState = rememberWindowState(width = 800.dp, height = 600.dp)
+    val windowState = rememberWindowState(width = AppSettings.WINDOW_WIDTH, height = AppSettings.WINDOW_HEIGHT)
     val actRepository = FileActRepository()
     var themeMode by remember { mutableStateOf(ThemeMode.LIGHT) }
     val localizationManager = remember { LocalizationManager() } // <-- добавлено
