@@ -34,10 +34,11 @@ fun EditActDialog(
     var selectedCategory by remember { mutableStateOf(act.category) }
     var selectedType by remember { mutableStateOf(act.type) }
     var isRegular by remember { mutableStateOf(act.regularity) }
+    var metric by remember { mutableStateOf(act.metric) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource("edit_activity")) }, // можно добавить в ресурсы
+        title = { Text(stringResource("edit_activity")) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
@@ -51,7 +52,7 @@ fun EditActDialog(
                     selectedCategory = selectedCategory,
                     onCategorySelected = { selectedCategory = it },
                     categories = categories,
-                    onAddCategoryClick = { /* можно оставить пустым или закрыть диалог */ }
+                    onAddCategoryClick = { /* не показываем добавление в диалоге редактирования */ }
                 )
                 TypeDropdown(
                     selectedType = selectedType,
@@ -62,6 +63,10 @@ fun EditActDialog(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource("regular"))
                 }
+                MetricInput(
+                    initialMetric = metric,
+                    onMetricChange = { metric = it }
+                )
             }
         },
         confirmButton = {
@@ -71,13 +76,14 @@ fun EditActDialog(
                         name = name,
                         category = selectedCategory,
                         type = selectedType,
-                        regularity = isRegular
+                        regularity = isRegular,
+                        metric = metric
                     )
                     onConfirm(updatedAct)
                 },
                 enabled = name.isNotBlank()
             ) {
-                Text(stringResource("save")) // можно вынести в ресурсы
+                Text(stringResource("save"))
             }
         },
         dismissButton = {

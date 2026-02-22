@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.model.ActType
+import app.majodesk.domain.model.Metric
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
 import app.majodesk.ui.localization.stringResource
@@ -46,12 +47,13 @@ import app.majodesk.ui.localization.stringResource
 fun AddActCard(
     categories: List<ActCategory>,
     onAddCategoryClick: () -> Unit,
-    onAddClick: (name: String, category: ActCategory, type: ActType, regularity: Boolean) -> Unit
+    onAddClick: (name: String, category: ActCategory, type: ActType, regularity: Boolean, metric: Metric) -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(ActCategory.ANOTHER) }
     var selectedType by remember { mutableStateOf(ActType.ACTION) }
     var isRegular by remember { mutableStateOf(true) }
+    var metric by remember { mutableStateOf<Metric>(Metric.Count(1.0)) } // начальное значение
 
     Column(
         modifier = Modifier
@@ -74,11 +76,15 @@ fun AddActCard(
             checked = isRegular,
             onCheckedChange = { isRegular = it }
         )
+        MetricInput(
+            initialMetric = metric,
+            onMetricChange = { metric = it }
+        )
         Spacer(modifier = Modifier.height(8.dp))
         AddButton(
             enabled = name.isNotBlank(),
             onClick = {
-                onAddClick(name, selectedCategory, selectedType, isRegular)
+                onAddClick(name, selectedCategory, selectedType, isRegular, metric)
             }
         )
     }

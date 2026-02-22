@@ -72,7 +72,20 @@ private val ru = mapOf(
     "color_yellow" to "Жёлтый",
     "color_purple" to "Фиолетовый",
     "save" to "Сохранить",
-    "edit_activity" to "Редактировать активность"
+    "edit_activity" to "Редактировать активность",
+    "metric_type" to "Тип метрики",
+    "metric_points" to "Очки за единицу",
+    "metric_unit" to "Единица измерения",
+    "metric_count" to "Счётчик",
+    "metric_distance" to "Дистанция",
+    "metric_weight" to "Вес",
+    "metric_time" to "Время",
+    "unit_km" to "км",
+    "unit_m" to "м",
+    "unit_kg" to "кг",
+    "unit_t" to "т",
+    "unit_h" to "ч",
+    "unit_min" to "мин"
 )
 
 private val en = mapOf(
@@ -113,5 +126,18 @@ private val en = mapOf(
     "color_yellow" to "Yellow",
     "color_purple" to "Purple",
     "save" to "Save",
-    "edit_activity" to "Edit activity"
+    "edit_activity" to "Edit activity",
+    "metric_type" to "Тип метрики",
+    "metric_points" to "Очки за единицу",
+    "metric_unit" to "Единица измерения",
+    "metric_count" to "Счётчик",
+    "metric_distance" to "Дистанция",
+    "metric_weight" to "Вес",
+    "metric_time" to "Время",
+    "unit_km" to "км",
+    "unit_m" to "м",
+    "unit_kg" to "кг",
+    "unit_t" to "т",
+    "unit_h" to "ч",
+    "unit_min" to "мин"
 )

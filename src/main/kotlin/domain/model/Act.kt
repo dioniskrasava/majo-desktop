@@ -17,6 +17,7 @@ data class Act(
     val category: ActCategory = ActCategory.ANOTHER,
     val type: ActType = ActType.ACTION,
     val regularity: Boolean = true,
+    val metric: Metric
     )
 
 // Стандартные категории можно определить как константы в companion object

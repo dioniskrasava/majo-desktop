@@ -17,7 +17,6 @@ import app.majodesk.ui.fragments.EditActDialog
 fun <T> ActivitiesScreen(
     repository: T
 ) where T : ActRepository, T : CategoryRepository {
-
     var acts by remember { mutableStateOf(repository.getAllActs()) }
     var categories by remember { mutableStateOf(repository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
@@ -30,13 +29,14 @@ fun <T> ActivitiesScreen(
         AddActCard(
             categories = categories,
             onAddCategoryClick = { showAddCategoryDialog = true },
-            onAddClick = { name, category, type, regularity ->
+            onAddClick = { name, category, type, regularity, metric ->
                 val act = Act(
-                    id = 0,
+                    id = 0, // id будет присвоен в репозитории
                     name = name,
                     category = category,
                     type = type,
-                    regularity = regularity
+                    regularity = regularity,
+                    metric = metric
                 )
                 repository.createAct(act)
                 acts = repository.getAllActs()
@@ -44,7 +44,7 @@ fun <T> ActivitiesScreen(
         )
         ActList(
             acts = acts,
-            onEditClick = { act -> actToEdit = act },          // открыть диалог редактирования
+            onEditClick = { act -> actToEdit = act },
             onDeleteClick = { act ->
                 repository.deleteAct(act.id)
                 acts = repository.getAllActs()
@@ -63,7 +63,6 @@ fun <T> ActivitiesScreen(
         )
     }
 
-    // Диалог редактирования активности
     if (actToEdit != null) {
         EditActDialog(
             act = actToEdit!!,

@@ -32,9 +32,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActType
+import app.majodesk.domain.model.Metric
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
 import app.majodesk.ui.localization.stringResource
+import app.majodesk.domain.model.DistanceUnit
+import app.majodesk.domain.model.WeightUnit
+import app.majodesk.domain.model.TimeUnit
 
 @Composable
 fun ActList(
@@ -145,6 +149,14 @@ fun ActCard(
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
+
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = formatMetric(act.metric),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
                 }
             }
 
@@ -177,3 +189,29 @@ private val ActType.icon: androidx.compose.ui.graphics.vector.ImageVector
         ActType.HABIT -> Icons.Default.Repeat
         ActType.VICE -> Icons.Default.Warning
     }
+
+/** Вспомогательная ф-я для отображения метрик*/
+fun formatMetric(metric: Metric): String {
+    return when (metric) {
+        is Metric.Count -> "${metric.points} очков за выполнение"
+        is Metric.Distance -> "${metric.points} очков за ${unitString(metric.unit)}"
+        is Metric.Weight -> "${metric.points} очков за ${unitString(metric.unit)}"
+        is Metric.Time -> "${metric.points} очков за ${unitString(metric.unit)}"
+    }
+}
+
+private fun unitString(unit: DistanceUnit): String = when (unit) {
+    DistanceUnit.KILOMETER -> "км"
+    DistanceUnit.METER -> "м"
+}
+
+private fun unitString(unit: WeightUnit): String = when (unit) {
+    WeightUnit.KILOGRAM -> "кг"
+    WeightUnit.TON -> "т"
+}
+
+private fun unitString(unit: TimeUnit): String = when (unit) {
+    TimeUnit.HOUR -> "ч"
+    TimeUnit.MINUTE -> "мин"
+    TimeUnit.SECOND -> "сек"
+}
