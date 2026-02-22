@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.ui.localization.stringResource
+import app.majodesk.ui.state.ActFormState
 
 @Composable
 fun EditActDialog(
@@ -30,58 +31,46 @@ fun EditActDialog(
     onDismiss: () -> Unit,
     onConfirm: (Act) -> Unit
 ) {
-    var name by remember { mutableStateOf(act.name) }
-    var selectedCategory by remember { mutableStateOf(act.category) }
-    var selectedType by remember { mutableStateOf(act.type) }
-    var isRegular by remember { mutableStateOf(act.regularity) }
-    var metric by remember { mutableStateOf(act.metric) }
+    var formState by remember {
+        mutableStateOf(
+            ActFormState(
+                name = act.name,
+                category = act.category,
+                type = act.type,
+                regularity = act.regularity,
+                metric = act.metric
+            )
+        )
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource("edit_activity")) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text(stringResource("activity_name")) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-                CategoryDropdown(
-                    selectedCategory = selectedCategory,
-                    onCategorySelected = { selectedCategory = it },
-                    categories = categories,
-                    onAddCategoryClick = { /* не показываем добавление в диалоге редактирования */ }
-                )
-                TypeDropdown(
-                    selectedType = selectedType,
-                    onTypeSelected = { selectedType = it }
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = isRegular, onCheckedChange = { isRegular = it })
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource("regular"))
-                }
-                MetricInput(
-                    initialMetric = metric,
-                    onMetricChange = { metric = it }
-                )
-            }
+            ActForm(
+                state = formState,
+                onNameChange = { formState = formState.copy(name = it) },
+                onCategoryChange = { formState = formState.copy(category = it) },
+                onTypeChange = { formState = formState.copy(type = it) },
+                onRegularityChange = { formState = formState.copy(regularity = it) },
+                onMetricChange = { formState = formState.copy(metric = it) },
+                categories = categories,
+                onAddCategoryClick = null  // не показываем пункт добавления категории
+            )
         },
         confirmButton = {
             TextButton(
                 onClick = {
                     val updatedAct = act.copy(
-                        name = name,
-                        category = selectedCategory,
-                        type = selectedType,
-                        regularity = isRegular,
-                        metric = metric
+                        name = formState.name,
+                        category = formState.category,
+                        type = formState.type,
+                        regularity = formState.regularity,
+                        metric = formState.metric
                     )
                     onConfirm(updatedAct)
                 },
-                enabled = name.isNotBlank()
+                enabled = formState.name.isNotBlank()
             ) {
                 Text(stringResource("save"))
             }

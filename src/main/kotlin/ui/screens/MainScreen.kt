@@ -1,13 +1,10 @@
 package app.majodesk.ui.screens
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShowChart
@@ -22,18 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.Color
-import app.majodesk.domain.model.Act
-import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
-import app.majodesk.ui.fragments.ActList
-import app.majodesk.ui.fragments.AddActCard
-import app.majodesk.ui.fragments.AddCategoryDialog // создайте этот компонент
-import app.majodesk.ui.fragments.ThemeSwitch
 import app.majodesk.ui.localization.stringResource
 import app.majodesk.ui.navigation.Screen
 import app.majodesk.ui.theme.ThemeMode
@@ -60,8 +49,8 @@ fun <T> MainScreen(
                 color = MaterialTheme.colorScheme.outlineVariant,
                 shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp, topStart = 8.dp, bottomStart = 8.dp),
             ),
-            containerColor = MaterialTheme.colorScheme.surfaceVariant, // вместо primary
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant, // если нужно
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ) {
             NavigationRailItem(
                 selected = currentScreen == Screen.Activities,
@@ -86,7 +75,7 @@ fun <T> MainScreen(
         // Контентная область – отображаем нужный экран
         Surface(modifier = Modifier.weight(1f)) {
             when (currentScreen) {
-                Screen.Activities -> ActivitiesScreen(
+                Screen.Activities -> ActsScreen(
                     repository = repository,
                     // Передаём также список категорий, но лучше использовать репозиторий напрямую
                 )

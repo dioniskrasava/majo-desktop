@@ -14,7 +14,7 @@ import app.majodesk.ui.fragments.AddCategoryDialog
 import app.majodesk.ui.fragments.EditActDialog
 
 @Composable
-fun <T> ActivitiesScreen(
+fun <T> ActsScreen(
     repository: T
 ) where T : ActRepository, T : CategoryRepository {
     var acts by remember { mutableStateOf(repository.getAllActs()) }

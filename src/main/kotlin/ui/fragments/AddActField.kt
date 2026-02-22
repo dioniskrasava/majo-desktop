@@ -33,6 +33,7 @@ import app.majodesk.domain.model.Metric
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
 import app.majodesk.ui.localization.stringResource
+import app.majodesk.ui.state.ActFormState
 import app.majodesk.ui.theme.Dimens.marginElements
 
 /**
@@ -46,11 +47,9 @@ fun AddActCard(
     onAddCategoryClick: () -> Unit,
     onAddClick: (name: String, category: ActCategory, type: ActType, regularity: Boolean, metric: Metric) -> Unit
 ) {
-    var name by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf(ActCategory.ANOTHER) }
-    var selectedType by remember { mutableStateOf(ActType.ACTION) }
-    var isRegular by remember { mutableStateOf(true) }
-    var metric by remember { mutableStateOf<Metric>(Metric.Count(1.0)) } // начальное значение
+
+    var formState by remember { mutableStateOf(ActFormState()) }  // ← изменено
+
 
     Column(
         modifier = Modifier
@@ -58,30 +57,28 @@ fun AddActCard(
             .padding(marginElements),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        NameInput(value = name, onValueChange = { name = it })
-        CategoryDropdown(
-            selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it },
+        ActForm(  // ← изменено
+            state = formState,
+            onNameChange = { formState = formState.copy(name = it) },
+            onCategoryChange = { formState = formState.copy(category = it) },
+            onTypeChange = { formState = formState.copy(type = it) },
+            onRegularityChange = { formState = formState.copy(regularity = it) },
+            onMetricChange = { formState = formState.copy(metric = it) },
             categories = categories,
             onAddCategoryClick = onAddCategoryClick
         )
-        TypeDropdown(
-            selectedType = selectedType,
-            onTypeSelected = { selectedType = it }
-        )
-        RegularityCheckbox(
-            checked = isRegular,
-            onCheckedChange = { isRegular = it }
-        )
-        MetricInput(
-            initialMetric = metric,
-            onMetricChange = { metric = it }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+
         AddButton(
-            enabled = name.isNotBlank(),
+            enabled = formState.name.isNotBlank(),
             onClick = {
-                onAddClick(name, selectedCategory, selectedType, isRegular, metric)
+                onAddClick(
+                    formState.name,
+                    formState.category,
+                    formState.type,
+                    formState.regularity,
+                    formState.metric
+                )
+                formState = ActFormState()
             }
         )
     }
