@@ -73,7 +73,7 @@ fun MetricInput(
                 points = it
                 notifyChange()
             },
-            label = { Text("Очки за единицу") }, // добавить в локализацию
+            label = { Text(stringResource("metric_points")) }, // добавить в локализацию
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             isError = points.toDoubleOrNull() == null
@@ -91,8 +91,8 @@ fun MetricInput(
                     units = DistanceUnit.values().toList(),
                     unitDisplay = { unit ->
                         when (unit) {
-                            DistanceUnit.KILOMETER -> "км"
-                            DistanceUnit.METER -> "м"
+                            DistanceUnit.KILOMETER -> stringResource("unit_km")
+                            DistanceUnit.METER -> stringResource("unit_m")
                         }
                     }
                 )
@@ -141,7 +141,7 @@ fun <T> UnitDropdown(
     selectedUnit: T,
     onUnitSelected: (T) -> Unit,
     units: List<T>,
-    unitDisplay: (T) -> String
+    unitDisplay: @Composable (T) -> String
 ) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
@@ -152,7 +152,7 @@ fun <T> UnitDropdown(
             value = unitDisplay(selectedUnit),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Единица измерения") }, // локализация
+            label = { Text(stringResource("metric_unit")) }, // локализация
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor()
@@ -188,14 +188,14 @@ fun TypeDropdown(
     ) {
         OutlinedTextField(
             value = when (selectedType) {
-                MetricType.COUNT -> "Счётчик"
-                MetricType.DISTANCE -> "Дистанция"
-                MetricType.WEIGHT -> "Вес"
-                MetricType.TIME -> "Время"
+                MetricType.COUNT -> stringResource("metric_count")
+                MetricType.DISTANCE -> stringResource("metric_distance")
+                MetricType.WEIGHT -> stringResource("metric_weight")
+                MetricType.TIME -> stringResource("metric_time")
             },
             onValueChange = {},
             readOnly = true,
-            label = { Text("Тип метрики") },
+            label = { Text(stringResource("metric_type")) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor()
@@ -210,10 +210,10 @@ fun TypeDropdown(
                     text = {
                         Text(
                             when (type) {
-                                MetricType.COUNT -> "Счётчик"
-                                MetricType.DISTANCE -> "Дистанция"
-                                MetricType.WEIGHT -> "Вес"
-                                MetricType.TIME -> "Время"
+                                MetricType.COUNT -> stringResource("metric_count")
+                                MetricType.DISTANCE -> stringResource("metric_distance")
+                                MetricType.WEIGHT -> stringResource("metric_weight")
+                                MetricType.TIME -> stringResource("metric_time")
                             }
                         )
                     },

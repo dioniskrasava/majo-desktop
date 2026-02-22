@@ -20,10 +20,10 @@ fun appColorScheme(mode: ThemeMode): ColorScheme {
             // остальные цвета можно не указывать — будут использованы значения по умолчанию
         )
         ThemeMode.DARK -> darkColorScheme(
-            primary = Color(0xFF092E5C),
+            primary = Color(0xFF447FCD),
             secondary = Color(0xFF03DAC5),
             background = Color(0xFF121212),
-            surface = Color(0xFF0C1021),
+            surface = Color(0xFF2D2D2D),
             surfaceVariant = Color(0xFF454545),
             onPrimary = Color.Black,
             onSecondary = Color.Black,

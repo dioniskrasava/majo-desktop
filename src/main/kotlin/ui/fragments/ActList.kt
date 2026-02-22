@@ -1,6 +1,5 @@
 package app.majodesk.ui.fragments
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +38,7 @@ import app.majodesk.ui.localization.stringResource
 import app.majodesk.domain.model.DistanceUnit
 import app.majodesk.domain.model.WeightUnit
 import app.majodesk.domain.model.TimeUnit
+import app.majodesk.ui.theme.Dimens.marginElements
 
 @Composable
 fun ActList(
@@ -61,7 +61,7 @@ fun ActList(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 16.dp)
+            contentPadding = PaddingValues(marginElements)
         ) {
             items(acts) { act ->
                 ActCard(

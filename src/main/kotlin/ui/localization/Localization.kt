@@ -80,12 +80,12 @@ private val ru = mapOf(
     "metric_distance" to "Дистанция",
     "metric_weight" to "Вес",
     "metric_time" to "Время",
-    "unit_km" to "км",
-    "unit_m" to "м",
-    "unit_kg" to "кг",
-    "unit_t" to "т",
-    "unit_h" to "ч",
-    "unit_min" to "мин"
+    "unit_km" to "километр",
+    "unit_m" to "метр",
+    "unit_kg" to "килограмм",
+    "unit_t" to "тонн",
+    "unit_h" to "часов",
+    "unit_min" to "минут"
 )
 
 private val en = mapOf(
@@ -127,17 +127,17 @@ private val en = mapOf(
     "color_purple" to "Purple",
     "save" to "Save",
     "edit_activity" to "Edit activity",
-    "metric_type" to "Тип метрики",
-    "metric_points" to "Очки за единицу",
-    "metric_unit" to "Единица измерения",
-    "metric_count" to "Счётчик",
-    "metric_distance" to "Дистанция",
-    "metric_weight" to "Вес",
-    "metric_time" to "Время",
-    "unit_km" to "км",
-    "unit_m" to "м",
-    "unit_kg" to "кг",
-    "unit_t" to "т",
-    "unit_h" to "ч",
-    "unit_min" to "мин"
+    "metric_type" to "Type of metric",
+    "metric_points" to "Points per unit",
+    "metric_unit" to "Unit of measurement",
+    "metric_count" to "Count",
+    "metric_distance" to "Distance",
+    "metric_weight" to "Weight",
+    "metric_time" to "Time",
+    "unit_km" to "kilometer",
+    "unit_m" to "meter",
+    "unit_kg" to "kilogram",
+    "unit_t" to "ton",
+    "unit_h" to "hour",
+    "unit_min" to "minutes"
 )
