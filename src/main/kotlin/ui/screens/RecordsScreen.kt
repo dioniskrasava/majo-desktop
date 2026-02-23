@@ -1,3 +1,4 @@
+// file: ui/screens/RecordsScreen.kt
 package app.majodesk.ui.screens
 
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import app.majodesk.domain.model.ActRecord
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.ui.fragments.AddRecordDialog
+import app.majodesk.ui.fragments.EditRecordDialog
 import app.majodesk.ui.fragments.RecordsList
 import app.majodesk.ui.localization.stringResource
 
@@ -23,6 +25,7 @@ fun RecordsScreen(
 ) {
     var records by remember { mutableStateOf(recordRepository.getAllRecords()) }
     var showAddDialog by remember { mutableStateOf(false) }
+    var recordToEdit by remember { mutableStateOf<ActRecord?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -32,19 +35,23 @@ fun RecordsScreen(
             onClick = { showAddDialog = true },
             modifier = Modifier.padding(bottom = 16.dp)
         ) {
-            Text(stringResource("add_record")) // нужно добавить ключ в локализацию
+            Text(stringResource("add_record"))
         }
 
         RecordsList(
             records = records,
-            acts = actRepository.getAllActs().associateBy { it.id }, // для быстрого получения Act по id
+            acts = actRepository.getAllActs().associateBy { it.id },
             onDeleteClick = { record ->
                 recordRepository.deleteRecord(record.id)
                 records = recordRepository.getAllRecords()
+            },
+            onEditClick = { record ->
+                recordToEdit = record
             }
         )
     }
 
+    // Диалог добавления
     if (showAddDialog) {
         AddRecordDialog(
             acts = actRepository.getAllActs(),
@@ -53,6 +60,20 @@ fun RecordsScreen(
                 recordRepository.createRecord(newRecord)
                 records = recordRepository.getAllRecords()
                 showAddDialog = false
+            }
+        )
+    }
+
+    // Диалог редактирования
+    if (recordToEdit != null) {
+        EditRecordDialog(
+            record = recordToEdit!!,
+            acts = actRepository.getAllActs(),
+            onDismiss = { recordToEdit = null },
+            onConfirm = { updatedRecord ->
+                recordRepository.updateRecord(updatedRecord)
+                records = recordRepository.getAllRecords()
+                recordToEdit = null
             }
         )
     }
