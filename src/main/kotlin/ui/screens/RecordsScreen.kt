@@ -1,4 +1,3 @@
-// file: ui/screens/RecordsScreen.kt
 package app.majodesk.ui.screens
 
 import androidx.compose.foundation.layout.Column
@@ -51,7 +50,6 @@ fun RecordsScreen(
         )
     }
 
-    // Диалог добавления
     if (showAddDialog) {
         AddRecordDialog(
             acts = actRepository.getAllActs(),
@@ -64,7 +62,6 @@ fun RecordsScreen(
         )
     }
 
-    // Диалог редактирования
     if (recordToEdit != null) {
         EditRecordDialog(
             record = recordToEdit!!,

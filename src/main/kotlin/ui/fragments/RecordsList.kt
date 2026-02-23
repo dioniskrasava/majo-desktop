@@ -1,4 +1,3 @@
-// file: ui/fragments/RecordsList.kt
 package app.majodesk.ui.fragments
 
 import androidx.compose.foundation.background
@@ -14,20 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActRecord
+import app.majodesk.domain.model.Metric
+import app.majodesk.domain.model.DistanceUnit
+import app.majodesk.domain.model.WeightUnit
+import app.majodesk.domain.model.TimeUnit
 import app.majodesk.ui.colorFromHex
 import app.majodesk.ui.iconFromName
-import app.majodesk.ui.theme.Dimens
-import kotlinx.datetime.LocalDateTime
+import app.majodesk.ui.localization.stringResource
+import kotlinx.datetime.*
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
-import kotlinx.datetime.format.byUnicodePattern
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -35,7 +33,7 @@ fun RecordsList(
     records: List<ActRecord>,
     acts: Map<Long, Act>,
     onDeleteClick: (ActRecord) -> Unit,
-    onEditClick: (ActRecord) -> Unit   // новая функция
+    onEditClick: (ActRecord) -> Unit
 ) {
     if (records.isEmpty()) {
         Box(
@@ -43,7 +41,7 @@ fun RecordsList(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Нет записей", // лучше использовать stringResource
+                text = stringResource("no_records"),
                 style = MaterialTheme.typography.bodyLarge
             )
         }
@@ -53,9 +51,10 @@ fun RecordsList(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(records) { record ->
+                val act = acts[record.actId]
                 RecordCard(
                     record = record,
-                    act = acts[record.actId],
+                    act = act,
                     onDeleteClick = { onDeleteClick(record) },
                     onEditClick = { onEditClick(record) }
                 )
@@ -64,7 +63,6 @@ fun RecordsList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordCard(
     record: ActRecord,
@@ -74,7 +72,7 @@ fun RecordCard(
 ) {
     val category = act?.category
     val cardColor = if (category != null) {
-        colorFromHex(category.colorHex).copy(alpha = 0.15f) // полупрозрачный фон
+        colorFromHex(category.colorHex).copy(alpha = 0.15f)
     } else {
         MaterialTheme.colorScheme.surfaceVariant
     }
@@ -104,11 +102,11 @@ fun RecordCard(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Основная информация
+            // Информация о записи
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = act?.name ?: "Неизвестная активность",
-                    style = MaterialTheme.typography.titleLarge, // увеличенный шрифт
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
@@ -118,9 +116,9 @@ fun RecordCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                if (record.durationMinutes != null) {
+                if (act != null) {
                     Text(
-                        text = "Длительность: ${record.durationMinutes} мин",
+                        text = formatValueWithUnit(record.value, act.metric),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -132,7 +130,7 @@ fun RecordCard(
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontStyle = FontStyle.Italic
                         ),
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f) // другой цвет
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
                     )
                 }
             }
@@ -158,10 +156,33 @@ fun RecordCard(
     }
 }
 
-// Форматирование даты/времени для отображения
 @OptIn(FormatStringsInDatetimeFormats::class)
-private fun formatDateTime(instant: kotlinx.datetime.Instant): String {
+private fun formatDateTime(instant: Instant): String {
     val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     return localDateTime.toJavaLocalDateTime().format(formatter)
+}
+
+@Composable
+private fun formatValueWithUnit(value: Double, metric: Metric): String {
+    return when (metric) {
+        is Metric.Count -> "$value ${stringResource("unit_pcs")}"
+        is Metric.Distance -> "$value ${unitString(metric.unit)}"
+        is Metric.Weight -> "$value ${unitString(metric.unit)}"
+        is Metric.Time -> "$value ${unitString(metric.unit)}"
+    }
+}
+
+private fun unitString(unit: DistanceUnit): String = when (unit) {
+    DistanceUnit.KILOMETER -> "км"
+    DistanceUnit.METER -> "м"
+}
+private fun unitString(unit: WeightUnit): String = when (unit) {
+    WeightUnit.KILOGRAM -> "кг"
+    WeightUnit.TON -> "т"
+}
+private fun unitString(unit: TimeUnit): String = when (unit) {
+    TimeUnit.HOUR -> "ч"
+    TimeUnit.MINUTE -> "мин"
+    TimeUnit.SECOND -> "сек"
 }

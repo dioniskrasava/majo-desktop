@@ -9,8 +9,7 @@ data class ActRecord(
     val id: Long,
     val actId: Long,
     val startTime: Instant,
-    val endTime: Instant? = null,
-    val durationMinutes: Int? = null,
+    val value: Double,               // значение, интерпретируется согласно метрике активности
     val notes: String = "",
     val createdAt: Instant = Clock.System.now()
 )

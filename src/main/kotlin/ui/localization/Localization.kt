@@ -92,7 +92,12 @@ private val ru = mapOf(
     "duration" to "Длительность",
     "notes" to "Заметки",
     "record_deleted" to "Запись удалена",
-    "no_records" to "Нет записей"
+    "no_records" to "Нет записей",
+    "unit_pcs" to "раз",
+    "no_records" to "Нет записей",
+    "unit_pcs" to "раз",
+    "no_records" to "Нет записей",
+    "activity" to "Активность"
 )
 
 private val en = mapOf(
@@ -153,5 +158,10 @@ private val en = mapOf(
     "duration" to "Duration",
     "notes" to "Notes",
     "record_deleted" to "Record deleted",
-    "no_records" to "No records"
+    "no_records" to "No records",
+    "unit_pcs" to "times",
+    "no_records" to "No records",
+    "unit_pcs" to "times",
+    "no_records" to "No records",
+    "activity" to "Activity"
 )
