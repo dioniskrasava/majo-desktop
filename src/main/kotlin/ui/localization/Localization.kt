@@ -85,7 +85,14 @@ private val ru = mapOf(
     "unit_kg" to "килограмм",
     "unit_t" to "тонн",
     "unit_h" to "часов",
-    "unit_min" to "минут"
+    "unit_min" to "минут",
+    "add_record" to "Добавить запись",
+    "records" to "Логи",
+    "start_time" to "Время начала",
+    "duration" to "Длительность",
+    "notes" to "Заметки",
+    "record_deleted" to "Запись удалена",
+    "no_records" to "Нет записей"
 )
 
 private val en = mapOf(
@@ -139,5 +146,12 @@ private val en = mapOf(
     "unit_kg" to "kilogram",
     "unit_t" to "ton",
     "unit_h" to "hour",
-    "unit_min" to "minutes"
+    "unit_min" to "minutes",
+    "add_record" to "Add record",
+    "records" to "Logs",
+    "start_time" to "Start time",
+    "duration" to "Duration",
+    "notes" to "Notes",
+    "record_deleted" to "Record deleted",
+    "no_records" to "No records"
 )

@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import app.majodesk.data.repository.FileActRecordRepository
 import app.majodesk.data.repository.FileActRepository
 import app.majodesk.ui.AppSettings
 import app.majodesk.ui.localization.LocalLocalizationManager
@@ -20,9 +21,11 @@ import java.awt.Dimension
 
 fun main() = application {
     val windowState = rememberWindowState(width = AppSettings.WINDOW_WIDTH, height = AppSettings.WINDOW_HEIGHT)
-    val actRepository = FileActRepository()
     var themeMode by remember { mutableStateOf(ThemeMode.LIGHT) }
-    val localizationManager = remember { LocalizationManager() } // <-- добавлено
+    val localizationManager = remember { LocalizationManager() }
+
+    val actRepository = FileActRepository()
+    val recordRepository = FileActRecordRepository()
 
     Window(
         onCloseRequest = ::exitApplication,
@@ -36,7 +39,8 @@ fun main() = application {
         CompositionLocalProvider(LocalLocalizationManager provides localizationManager) { // <-- обёртка
             MaterialTheme( appColorScheme(themeMode)) {
                 MainScreen(
-                    repository = actRepository,
+                    actRepository = actRepository,
+                    recordRepository = recordRepository,
                     themeMode = themeMode,
                     onThemeToggle = { themeMode = if (themeMode == ThemeMode.LIGHT) ThemeMode.DARK else ThemeMode.LIGHT }
                 )

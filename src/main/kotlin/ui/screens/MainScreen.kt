@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
 import app.majodesk.ui.localization.stringResource
@@ -29,7 +31,8 @@ import app.majodesk.ui.theme.ThemeMode
 
 @Composable
 fun <T> MainScreen(
-    repository: T,
+    actRepository: T,           // для активностей и категорий
+    recordRepository: ActRecordRepository,   // для записей
     themeMode: ThemeMode,
     onThemeToggle: () -> Unit
 ) where T : ActRepository, T : CategoryRepository {
@@ -70,19 +73,29 @@ fun <T> MainScreen(
                 icon = { Icon(Icons.Default.Settings, contentDescription = "Настройки") },
                 label = { Text(stringResource("settings")) }
             )
+            NavigationRailItem(
+                selected = currentScreen == Screen.Records,
+                onClick = { currentScreen = Screen.Records },
+                icon = { Icon(Icons.Default.History, contentDescription = "Логи") },
+                label = { Text("Логи") } // можно добавить в локализацию
+            )
         }
 
         // Контентная область – отображаем нужный экран
         Surface(modifier = Modifier.weight(1f)) {
             when (currentScreen) {
                 Screen.Activities -> ActsScreen(
-                    repository = repository,
+                    repository = actRepository,
                     // Передаём также список категорий, но лучше использовать репозиторий напрямую
                 )
                 Screen.Statistics -> StatisticsScreen()
                 Screen.Settings -> SettingsScreen(
                     themeMode = themeMode,
                     onThemeToggle = onThemeToggle
+                )
+                Screen.Records -> RecordsScreen(
+                    actRepository = actRepository,      // repository должен быть ActRepository
+                    recordRepository = recordRepository // нужно передать дополнительно
                 )
             }
         }
