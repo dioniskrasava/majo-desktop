@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShowChart
@@ -57,6 +58,12 @@ fun <T> MainScreen(
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ) {
             NavigationRailItem(
+                selected = currentScreen == Screen.Matrix,
+                onClick = { currentScreen = Screen.Matrix },
+                icon = { Icon(Icons.Default.GridView, contentDescription = "Матрица") }, // или другая иконка
+                label = { Text("Матрица") }
+            )
+            NavigationRailItem(
                 selected = currentScreen == Screen.Records,
                 onClick = { currentScreen = Screen.Records },
                 icon = { Icon(Icons.Default.History, contentDescription = "Логи") },
@@ -95,6 +102,10 @@ fun <T> MainScreen(
                 Screen.Records -> RecordsScreen(
                     actRepository = actRepository,      // repository должен быть ActRepository
                     recordRepository = recordRepository // нужно передать дополнительно
+                )
+                Screen.Matrix -> MatrixScreen(
+                    actRepository = actRepository,
+                    recordRepository = recordRepository
                 )
             }
         }

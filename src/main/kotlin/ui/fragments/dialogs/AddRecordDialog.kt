@@ -22,12 +22,14 @@ import kotlinx.datetime.TimeZone
 fun AddRecordDialog(
     acts: List<Act>,
     onDismiss: () -> Unit,
-    onConfirm: (ActRecord) -> Unit
+    onConfirm: (ActRecord) -> Unit,
+    initialAct: Act? = null,
+    initialDateTime: Instant? = null
 ) {
-    var selectedAct by remember { mutableStateOf(acts.firstOrNull()) }
+    var selectedAct by remember(initialAct) { mutableStateOf(initialAct ?: acts.firstOrNull()) }
     var value by remember { mutableStateOf("") }
     var notes by remember { mutableStateOf("") }
-    var startDateTime by remember { mutableStateOf(Clock.System.now()) }
+    var startDateTime by remember(initialDateTime) { mutableStateOf(initialDateTime ?: Clock.System.now()) }
     var showDateTimePicker by remember { mutableStateOf(false) }
 
     val isValueValid = value.toDoubleOrNull() != null
