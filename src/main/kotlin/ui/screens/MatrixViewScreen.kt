@@ -1,12 +1,15 @@
 package app.majodesk.ui.screens
 
+import androidx.compose.foundation.HorizontalScrollbar
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import app.majodesk.data.matrix.MatrixConfig
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActRecord
@@ -33,38 +38,50 @@ fun MatrixViewScreen(
     val actsMap = remember { actRepository.getAllActs().associateBy { it.id } }
     val orderedActs = config.orderedActivityIds.mapNotNull { actsMap[it] }
     var records by remember { mutableStateOf(recordRepository.getAllRecords()) }
-
-    // Период: последние 100 дней (можно сделать настраиваемым)
-    val daysCount = 100
+    var daysCount by remember { mutableStateOf(100) }
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val dates = (0 until daysCount).map { offset ->
         today.minus(offset, DateTimeUnit.DAY)
     }.reversed()
-
-    // Группируем записи по activityId и дате
     val recordsByActAndDate = records
         .groupBy { it.actId }
         .mapValues { entry ->
             entry.value.associateBy { it.startTime.toLocalDateTime(TimeZone.currentSystemDefault()).date }
         }
-
-    // Состояние для диалога добавления
     var showAddDialog by remember { mutableStateOf(false) }
     var selectedActForDialog by remember { mutableStateOf<Act?>(null) }
     var selectedDateForDialog by remember { mutableStateOf<LocalDate?>(null) }
 
+    // Параметры для горизонтального скролла
+    val cellWidth = 20.dp
+    val spacing = 2.dp
+    val totalWidth = (dates.size * (cellWidth + spacing)) - spacing
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier.fillMaxSize().padding(8.dp)
     ) {
-        // Заголовок с месяцами
-        MonthHeader(dates)
+        // Заголовок с датами (фиксированный отступ слева 120.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Spacer(modifier = Modifier.width(120.dp)) // такой же ширины, как название активности
+            // Прокручиваемая часть заголовка
+            MonthHeader(
+                dates = dates,
+                scrollState = scrollState,
+                cellWidth = cellWidth,
+                spacing = spacing,
+                totalWidth = totalWidth
+            )
+        }
 
-        // Строки активностей
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(orderedActs) { act ->
+                // Строка активности с фиксированным названием слева
                 ActivityRow(
                     act = act,
                     dates = dates,
@@ -73,20 +90,34 @@ fun MatrixViewScreen(
                         selectedActForDialog = act
                         selectedDateForDialog = date
                         showAddDialog = true
-                    }
+                    },
+                    scrollState = scrollState,
+                    cellWidth = cellWidth,
+                    spacing = spacing,
+                    totalWidth = totalWidth
                 )
             }
         }
+
+        HorizontalScrollbar(
+            modifier = Modifier.fillMaxWidth(),
+            adapter = rememberScrollbarAdapter(scrollState)
+        )
+
+        IntervalSelector(
+            daysCount = daysCount,
+            onIntervalChange = { daysCount = it }
+        )
     }
 
     if (showAddDialog && selectedActForDialog != null && selectedDateForDialog != null) {
         val instant = selectedDateForDialog!!.atStartOfDayIn(TimeZone.currentSystemDefault())
         AddRecordDialog(
-            acts = listOf(selectedActForDialog!!), // передаём только выбранную активность
+            acts = listOf(selectedActForDialog!!),
             onDismiss = { showAddDialog = false },
             onConfirm = { newRecord ->
                 recordRepository.createRecord(newRecord)
-                records = recordRepository.getAllRecords() // обновляем список
+                records = recordRepository.getAllRecords()
                 showAddDialog = false
             },
             initialAct = selectedActForDialog,
@@ -96,18 +127,40 @@ fun MatrixViewScreen(
 }
 
 @Composable
-fun MonthHeader(dates: List<LocalDate>) {
-    val months = dates.groupBy { it.month }
-    LazyRow(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
+fun MonthHeader(
+    dates: List<LocalDate>,
+    scrollState: ScrollState,
+    cellWidth: Dp,
+    spacing: Dp,
+    totalWidth: Dp
+) {
+    val monthGroups = dates.groupBy { it.month }
+    Row(
+        modifier = Modifier
+            .horizontalScroll(scrollState)
+            .width(totalWidth)
     ) {
-        items(months.toList()) { (month, monthDates) ->
-            Text(
-                text = month.name.substring(0, 3), // сокращение месяца
-                modifier = Modifier.width((monthDates.size * 20).dp), // ширина под количество дней
-                style = MaterialTheme.typography.bodySmall
-            )
+        monthGroups.forEach { (month, monthDates) ->
+            Column(
+                modifier = Modifier.width((monthDates.size * (cellWidth + spacing)) - spacing)
+            ) {
+                Text(
+                    text = month.name,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(start = 2.dp)
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(spacing)
+                ) {
+                    monthDates.forEach { date ->
+                        Text(
+                            text = date.dayOfMonth.toString(),
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.width(cellWidth)
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -117,34 +170,83 @@ fun ActivityRow(
     act: Act,
     dates: List<LocalDate>,
     recordsForAct: Map<LocalDate, ActRecord>,
-    onCellClick: (LocalDate) -> Unit
+    onCellClick: (LocalDate) -> Unit,
+    scrollState: ScrollState,
+    cellWidth: Dp,
+    spacing: Dp,
+    totalWidth: Dp
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Название активности (фиксированная ширина)
+        // Фиксированное название активности
         Text(
             text = act.name,
             modifier = Modifier.width(120.dp),
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1
         )
-
-        // Квадратики
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        // Прокручиваемая область с ячейками
+        Row(
+            modifier = Modifier
+                .horizontalScroll(scrollState)
+                .width(totalWidth),
+            horizontalArrangement = Arrangement.spacedBy(spacing)
         ) {
-            itemsIndexed(dates) { _, date ->
+            dates.forEach { date ->
                 val record = recordsForAct[date]
                 val isGreen = record != null && record.value > 0
                 Box(
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(cellWidth)
                         .clip(RoundedCornerShape(4.dp))
                         .background(if (isGreen) Color.Green else Color.LightGray)
                         .clickable { onCellClick(date) }
                 )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun IntervalSelector(daysCount: Int, onIntervalChange: (Int) -> Unit) {
+    val options = listOf(30, 60, 90, 180, 365)
+    var expanded by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("Показать за:", modifier = Modifier.padding(end = 8.dp))
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            OutlinedTextField(
+                value = "$daysCount дней",
+                onValueChange = {},
+                readOnly = true,
+                modifier = Modifier.menuAnchor().width(120.dp)
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                options.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text("$option дней") },
+                        onClick = {
+                            onIntervalChange(option)
+                            expanded = false
+                        }
+                    )
+                }
             }
         }
     }
