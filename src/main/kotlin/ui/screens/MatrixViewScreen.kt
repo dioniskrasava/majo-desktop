@@ -52,7 +52,6 @@ fun MatrixViewScreen(
     var selectedActForDialog by remember { mutableStateOf<Act?>(null) }
     var selectedDateForDialog by remember { mutableStateOf<LocalDate?>(null) }
 
-    // Параметры для горизонтального скролла
     val cellWidth = 20.dp
     val spacing = 2.dp
     val totalWidth = (dates.size * (cellWidth + spacing)) - spacing
@@ -61,12 +60,10 @@ fun MatrixViewScreen(
     Column(
         modifier = Modifier.fillMaxSize().padding(8.dp)
     ) {
-        // Заголовок с датами (фиксированный отступ слева 120.dp)
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.width(120.dp)) // такой же ширины, как название активности
-            // Прокручиваемая часть заголовка
+            Spacer(modifier = Modifier.width(120.dp))
             MonthHeader(
                 dates = dates,
                 scrollState = scrollState,
@@ -81,7 +78,6 @@ fun MatrixViewScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(orderedActs) { act ->
-                // Строка активности с фиксированным названием слева
                 ActivityRow(
                     act = act,
                     dates = dates,
@@ -134,18 +130,22 @@ fun MonthHeader(
     spacing: Dp,
     totalWidth: Dp
 ) {
-    val monthGroups = dates.groupBy { it.month }
+    val monthGroups = dates.groupBy { it.year to it.month }
+        .toSortedMap(compareBy { it.first * 100 + it.second.ordinal })
+    val showYear = dates.map { it.year }.distinct().size > 1
+
     Row(
         modifier = Modifier
             .horizontalScroll(scrollState)
             .width(totalWidth)
     ) {
-        monthGroups.forEach { (month, monthDates) ->
+        monthGroups.forEach { (yearMonth, monthDates) ->
+            val (year, month) = yearMonth
             Column(
                 modifier = Modifier.width((monthDates.size * (cellWidth + spacing)) - spacing)
             ) {
                 Text(
-                    text = month.name,
+                    text = if (showYear) "${month.name.take(3)} ${year % 100}" else month.name.take(3),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(start = 2.dp)
                 )
@@ -182,14 +182,12 @@ fun ActivityRow(
             .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Фиксированное название активности
         Text(
             text = act.name,
             modifier = Modifier.width(120.dp),
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1
         )
-        // Прокручиваемая область с ячейками
         Row(
             modifier = Modifier
                 .horizontalScroll(scrollState)
