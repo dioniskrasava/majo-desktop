@@ -1,4 +1,4 @@
-package app.majodesk.ui.fragments
+package app.majodesk.ui.fragments.forms
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +36,8 @@ fun ActForm(
             selectedCategory = state.category,
             onCategorySelected = onCategoryChange,
             categories = categories,
-            onAddCategoryClick = onAddCategoryClick ?: {} // если null, передаём пустую лямбду, но внутри CategoryDropdown нужно скрыть пункт
+            onAddCategoryClick = onAddCategoryClick
+                ?: {} // если null, передаём пустую лямбду, но внутри CategoryDropdown нужно скрыть пункт
             // Для этого модифицируем CategoryDropdown, чтобы он принимал onAddCategoryClick? и показывал пункт только если не null
         )
 

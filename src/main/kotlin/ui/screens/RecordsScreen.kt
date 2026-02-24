@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActRecord
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.domain.repository.ActRepository
-import app.majodesk.ui.fragments.AddRecordDialog
-import app.majodesk.ui.fragments.EditRecordDialog
-import app.majodesk.ui.fragments.RecordsList
+import app.majodesk.ui.fragments.dialogs.AddRecordDialog
+import app.majodesk.ui.fragments.dialogs.EditRecordDialog
+import app.majodesk.ui.fragments.lists.RecordsList
 import app.majodesk.ui.localization.stringResource
 
 @Composable

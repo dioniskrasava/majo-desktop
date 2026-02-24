@@ -1,4 +1,4 @@
-package app.majodesk.ui.fragments
+package app.majodesk.ui.fragments.lists
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -106,20 +106,20 @@ fun RecordCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = act?.name ?: "Неизвестная активность",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
                     text = formatDateTime(record.startTime),
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 if (act != null) {
                     Text(
                         text = formatValueWithUnit(record.value, act.metric),
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -127,7 +127,7 @@ fun RecordCard(
                 if (record.notes.isNotBlank()) {
                     Text(
                         text = record.notes,
-                        style = MaterialTheme.typography.bodyLarge.copy(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             fontStyle = FontStyle.Italic
                         ),
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)

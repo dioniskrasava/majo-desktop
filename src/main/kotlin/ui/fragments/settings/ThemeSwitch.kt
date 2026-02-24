@@ -1,4 +1,4 @@
-package app.majodesk.ui.fragments
+package app.majodesk.ui.fragments.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

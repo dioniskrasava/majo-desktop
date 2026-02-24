@@ -8,10 +8,10 @@ import androidx.compose.ui.Modifier
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
-import app.majodesk.ui.fragments.ActList
-import app.majodesk.ui.fragments.AddActCard
-import app.majodesk.ui.fragments.AddCategoryDialog
-import app.majodesk.ui.fragments.EditActDialog
+import app.majodesk.ui.fragments.lists.ActList
+import app.majodesk.ui.fragments.forms.AddActCard
+import app.majodesk.ui.fragments.dialogs.AddCategoryDialog
+import app.majodesk.ui.fragments.dialogs.EditActDialog
 
 @Composable
 fun <T> ActsScreen(

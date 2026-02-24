@@ -1,4 +1,4 @@
-package app.majodesk.ui.fragments
+package app.majodesk.ui.fragments.lists
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActType
@@ -184,7 +185,7 @@ fun ActCard(
 }
 
 
-private val ActType.icon: androidx.compose.ui.graphics.vector.ImageVector
+private val ActType.icon: ImageVector
     get() = when (this) {
         ActType.ACTION -> Icons.Default.CheckCircle
         ActType.HABIT -> Icons.Default.Repeat

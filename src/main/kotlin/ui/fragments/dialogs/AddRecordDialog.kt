@@ -1,4 +1,4 @@
-package app.majodesk.ui.fragments
+package app.majodesk.ui.fragments.dialogs
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

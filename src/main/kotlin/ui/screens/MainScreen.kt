@@ -37,7 +37,7 @@ fun <T> MainScreen(
     onThemeToggle: () -> Unit
 ) where T : ActRepository, T : CategoryRepository {
 
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Activities) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Records) }
 
     Row(modifier = Modifier.fillMaxSize()) {
 
@@ -56,6 +56,12 @@ fun <T> MainScreen(
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ) {
             NavigationRailItem(
+                selected = currentScreen == Screen.Records,
+                onClick = { currentScreen = Screen.Records },
+                icon = { Icon(Icons.Default.History, contentDescription = "Логи") },
+                label = { Text("Логи") } // можно добавить в локализацию
+            )
+            NavigationRailItem(
                 selected = currentScreen == Screen.Activities,
                 onClick = { currentScreen = Screen.Activities },
                 icon = { Icon(Icons.Default.List, contentDescription = "Активности") },
@@ -67,17 +73,12 @@ fun <T> MainScreen(
                 icon = { Icon(Icons.Default.ShowChart, contentDescription = "Статистика") },
                 label = { Text(stringResource("statistics")) }
             )
+
             NavigationRailItem(
                 selected = currentScreen == Screen.Settings,
                 onClick = { currentScreen = Screen.Settings },
                 icon = { Icon(Icons.Default.Settings, contentDescription = "Настройки") },
                 label = { Text(stringResource("settings")) }
-            )
-            NavigationRailItem(
-                selected = currentScreen == Screen.Records,
-                onClick = { currentScreen = Screen.Records },
-                icon = { Icon(Icons.Default.History, contentDescription = "Логи") },
-                label = { Text("Логи") } // можно добавить в локализацию
             )
         }
 
