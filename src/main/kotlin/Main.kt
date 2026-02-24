@@ -2,6 +2,7 @@ package app.majodesk
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,14 +19,22 @@ import app.majodesk.ui.screens.MainScreen
 import app.majodesk.ui.theme.ThemeMode
 import app.majodesk.ui.theme.appColorScheme
 import java.awt.Dimension
+import app.majodesk.data.settings.FileSettingsRepository
+import app.majodesk.data.settings.SettingsManager
 
 fun main() = application {
     val windowState = rememberWindowState(width = AppSettings.WINDOW_WIDTH, height = AppSettings.WINDOW_HEIGHT)
-    var themeMode by remember { mutableStateOf(ThemeMode.LIGHT) }
+    //var themeMode by remember { mutableStateOf(ThemeMode.LIGHT) }
+    val settingsManager = remember { SettingsManager(FileSettingsRepository()) }
     val localizationManager = remember { LocalizationManager() }
 
     val actRepository = FileActRepository()
     val recordRepository = FileActRecordRepository()
+
+    // Синхронизация языка при изменении настроек
+    LaunchedEffect(settingsManager.settings.language) {
+        localizationManager.setLanguage(settingsManager.settings.language)
+    }
 
     Window(
         onCloseRequest = ::exitApplication,
@@ -37,12 +46,11 @@ fun main() = application {
             AppSettings.MIN_WINDOW_HEIGHT
         )
         CompositionLocalProvider(LocalLocalizationManager provides localizationManager) { // <-- обёртка
-            MaterialTheme( appColorScheme(themeMode)) {
+            MaterialTheme( appColorScheme(settingsManager.settings.themeMode)) {
                 MainScreen(
                     actRepository = actRepository,
                     recordRepository = recordRepository,
-                    themeMode = themeMode,
-                    onThemeToggle = { themeMode = if (themeMode == ThemeMode.LIGHT) ThemeMode.DARK else ThemeMode.LIGHT }
+                    settingsManager = settingsManager
                 )
             }
         }

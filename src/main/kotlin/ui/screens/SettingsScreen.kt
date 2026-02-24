@@ -25,22 +25,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.majodesk.data.settings.SettingsManager
 import app.majodesk.ui.localization.Lang
 import app.majodesk.ui.localization.LocalLocalizationManager
 import app.majodesk.ui.localization.stringResource
 import app.majodesk.ui.theme.ThemeMode
 
 @Composable
-fun SettingsScreen(
-    themeMode: ThemeMode,
-    onThemeToggle: () -> Unit
-) {
+fun SettingsScreen(settingsManager: SettingsManager) {
+
+    val settings = settingsManager.settings
     val localizationManager = LocalLocalizationManager.current
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
@@ -50,17 +48,13 @@ fun SettingsScreen(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
-
-        // Карточка темы
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -76,23 +70,23 @@ fun SettingsScreen(
                         modifier = Modifier.weight(1f)
                     )
                     Switch(
-                        checked = themeMode == ThemeMode.DARK,
-                        onCheckedChange = { onThemeToggle() }
+                        checked = settings.themeMode == ThemeMode.DARK,
+                        onCheckedChange = {
+                            settingsManager.updateTheme(
+                                if (settings.themeMode == ThemeMode.LIGHT) ThemeMode.DARK else ThemeMode.LIGHT
+                            )
+                        }
                     )
                 }
             }
         }
-
-        // Карточка языка
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                    modifier = Modifier.fillMaxWidth().padding(16.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -108,20 +102,19 @@ fun SettingsScreen(
                         )
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    // Две тонированные кнопки для выбора языка
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         FilterChip(
-                            selected = localizationManager.currentLang == Lang.RU,
-                            onClick = { localizationManager.setLanguage(Lang.RU) },
+                            selected = settings.language == Lang.RU,
+                            onClick = { settingsManager.updateLanguage(Lang.RU) },
                             label = { Text(stringResource("russian")) },
                             modifier = Modifier.weight(1f)
                         )
                         FilterChip(
-                            selected = localizationManager.currentLang == Lang.EN,
-                            onClick = { localizationManager.setLanguage(Lang.EN) },
+                            selected = settings.language == Lang.EN,
+                            onClick = { settingsManager.updateLanguage(Lang.EN) },
                             label = { Text(stringResource("english")) },
                             modifier = Modifier.weight(1f)
                         )
@@ -129,7 +122,5 @@ fun SettingsScreen(
                 }
             }
         }
-
-        // Здесь можно добавить другие настройки в будущем
     }
 }

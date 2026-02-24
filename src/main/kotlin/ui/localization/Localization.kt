@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class Lang {
     RU, EN
 }

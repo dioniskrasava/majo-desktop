@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.majodesk.data.settings.SettingsManager
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
@@ -33,10 +34,10 @@ import app.majodesk.ui.theme.ThemeMode
 fun <T> MainScreen(
     actRepository: T,           // для активностей и категорий
     recordRepository: ActRecordRepository,   // для записей
-    themeMode: ThemeMode,
-    onThemeToggle: () -> Unit
+    settingsManager: SettingsManager
 ) where T : ActRepository, T : CategoryRepository {
 
+    val settingsState = settingsManager.settings
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Records) }
 
     Row(modifier = Modifier.fillMaxSize()) {
@@ -90,10 +91,7 @@ fun <T> MainScreen(
                     // Передаём также список категорий, но лучше использовать репозиторий напрямую
                 )
                 Screen.Statistics -> StatisticsScreen()
-                Screen.Settings -> SettingsScreen(
-                    themeMode = themeMode,
-                    onThemeToggle = onThemeToggle
-                )
+                Screen.Settings -> SettingsScreen(settingsManager)
                 Screen.Records -> RecordsScreen(
                     actRepository = actRepository,      // repository должен быть ActRepository
                     recordRepository = recordRepository // нужно передать дополнительно
