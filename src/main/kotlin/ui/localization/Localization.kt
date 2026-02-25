@@ -102,6 +102,19 @@ private val ru = mapOf(
     "activity" to "Активность",
     "reconfigure_matrix" to "Настроить матрицу",
     "matrix_title" to "Матрица",
+    "period_day" to "За день",
+    "period_3days" to "За 3 дня",
+    "period_week" to "За неделю",
+    "period_month" to "За месяц",
+    "period_3months" to "За 3 месяца",
+    "period_halfyear" to "За полгода",
+    "period_year" to "За год",
+    "period_all" to "Все записи",
+    "items_per_page" to "Записей на странице",
+    "page" to "Страница",
+    "of" to "из",
+    "previous" to "Предыдущая",
+    "next" to "Следующая"
 )
 
 private val en = mapOf(
@@ -169,5 +182,18 @@ private val en = mapOf(
     "no_records" to "No records",
     "activity" to "Activity",
     "reconfigure_matrix" to "Reconfigure matrix",
-    "matrix_title" to "Matrix"
+    "matrix_title" to "Matrix",
+    "period_day" to "Last day",
+    "period_3days" to "Last 3 days",
+    "period_week" to "Last week",
+    "period_month" to "Last month",
+    "period_3months" to "Last 3 months",
+    "period_halfyear" to "Last 6 months",
+    "period_year" to "Last year",
+    "period_all" to "All records",
+    "items_per_page" to "Items per page",
+    "page" to "Page",
+    "of" to "of",
+    "previous" to "Previous",
+    "next" to "Next"
 )

@@ -64,6 +64,25 @@ fun MatrixViewScreen(
     Column(
         modifier = Modifier.fillMaxSize().padding(8.dp)
     ) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource("matrix_title"),  // можно добавить новый ключ или оставить "Матрица"
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Button(onClick = onReconfigure) {
+                Icon(Icons.Default.Settings, contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(stringResource("reconfigure_matrix"))  // новый ключ
+            }
+        }
+
+
+
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -109,21 +128,7 @@ fun MatrixViewScreen(
             onIntervalChange = { daysCount = it }
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource("matrix_title"),  // можно добавить новый ключ или оставить "Матрица"
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Button(onClick = onReconfigure) {
-                Icon(Icons.Default.Settings, contentDescription = null)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(stringResource("reconfigure_matrix"))  // новый ключ
-            }
-        }
+
     }
 
     if (showAddDialog && selectedActForDialog != null && selectedDateForDialog != null) {
