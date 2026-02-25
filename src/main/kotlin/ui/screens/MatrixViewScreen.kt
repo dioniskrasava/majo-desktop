@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,6 +28,7 @@ import app.majodesk.domain.model.ActRecord
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.ui.fragments.dialogs.AddRecordDialog
+import app.majodesk.ui.localization.stringResource
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 
@@ -33,12 +36,13 @@ import kotlinx.datetime.TimeZone
 fun MatrixViewScreen(
     config: MatrixConfig,
     actRepository: ActRepository,
-    recordRepository: ActRecordRepository
+    recordRepository: ActRecordRepository,
+    onReconfigure: () -> Unit
 ) {
     val actsMap = remember { actRepository.getAllActs().associateBy { it.id } }
     val orderedActs = config.orderedActivityIds.mapNotNull { actsMap[it] }
     var records by remember { mutableStateOf(recordRepository.getAllRecords()) }
-    var daysCount by remember { mutableStateOf(100) }
+    var daysCount by remember { mutableStateOf(30) }
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val dates = (0 until daysCount).map { offset ->
         today.minus(offset, DateTimeUnit.DAY)
@@ -104,6 +108,22 @@ fun MatrixViewScreen(
             daysCount = daysCount,
             onIntervalChange = { daysCount = it }
         )
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource("matrix_title"),  // можно добавить новый ключ или оставить "Матрица"
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Button(onClick = onReconfigure) {
+                Icon(Icons.Default.Settings, contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(stringResource("reconfigure_matrix"))  // новый ключ
+            }
+        }
     }
 
     if (showAddDialog && selectedActForDialog != null && selectedDateForDialog != null) {
@@ -176,6 +196,9 @@ fun ActivityRow(
     spacing: Dp,
     totalWidth: Dp
 ) {
+
+    val myGreen = Color(0, 150, 0)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -201,7 +224,7 @@ fun ActivityRow(
                     modifier = Modifier
                         .size(cellWidth)
                         .clip(RoundedCornerShape(4.dp))
-                        .background(if (isGreen) Color.Green else Color.LightGray)
+                        .background(if (isGreen) myGreen else Color.LightGray)
                         .clickable { onCellClick(date) }
                 )
             }

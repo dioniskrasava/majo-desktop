@@ -99,7 +99,9 @@ private val ru = mapOf(
     "no_records" to "Нет записей",
     "unit_pcs" to "раз",
     "no_records" to "Нет записей",
-    "activity" to "Активность"
+    "activity" to "Активность",
+    "reconfigure_matrix" to "Настроить матрицу",
+    "matrix_title" to "Матрица",
 )
 
 private val en = mapOf(
@@ -165,5 +167,7 @@ private val en = mapOf(
     "no_records" to "No records",
     "unit_pcs" to "times",
     "no_records" to "No records",
-    "activity" to "Activity"
+    "activity" to "Activity",
+    "reconfigure_matrix" to "Reconfigure matrix",
+    "matrix_title" to "Matrix"
 )

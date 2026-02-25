@@ -26,4 +26,10 @@ class FileMatrixRepository(
             println("Ошибка сохранения матрицы: ${e.message}")
         }
     }
+
+    override fun deleteConfig() {
+        if (configFile.exists()) {
+            configFile.delete()
+        }
+    }
 }

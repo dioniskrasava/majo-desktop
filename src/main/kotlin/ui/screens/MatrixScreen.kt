@@ -14,6 +14,11 @@ fun MatrixScreen(
     val matrixRepository = remember { FileMatrixRepository() }
     var config by remember { mutableStateOf(matrixRepository.loadConfig()) }
 
+    val onReconfigure = {
+        matrixRepository.deleteConfig()
+        config = null
+    }
+
     if (config == null || config!!.orderedActivityIds.isEmpty()) {
         MatrixSetupScreen(
             actRepository = actRepository,
@@ -26,7 +31,8 @@ fun MatrixScreen(
         MatrixViewScreen(
             config = config!!,
             actRepository = actRepository,
-            recordRepository = recordRepository
+            recordRepository = recordRepository,
+            onReconfigure = onReconfigure   // передаём
         )
     }
 }
