@@ -114,7 +114,15 @@ private val ru = mapOf(
     "page" to "Страница",
     "of" to "из",
     "previous" to "Предыдущая",
-    "next" to "Следующая"
+    "next" to "Следующая",
+    "about_app" to "О приложении",
+    "version" to "Версия",
+    "author" to "Автор",
+    "close" to "Закрыть",
+    "description" to "Описание",
+    "description_application" to "Данное приложение необходимо для ведения заметок по активностям в течении дня." +
+            "\nВ целом необходимо для логирования разного рода активностей." +
+            "\nИ прочей ненужной лабуды."
 )
 
 private val en = mapOf(
@@ -195,5 +203,14 @@ private val en = mapOf(
     "page" to "Page",
     "of" to "of",
     "previous" to "Previous",
-    "next" to "Next"
+    "next" to "Next",
+    "about_app" to "About",
+    "version" to "Version",
+    "author" to "Author",
+    "close" to "Close",
+    "description" to "Description",
+    "description_application" to "Данное приложение необходимо для ведения заметок по активностям в течении дня." +
+            "\nВ целом необходимо для логирования разного рода активностей." +
+            "\nИ прочей ненужной лабуды."
+
 )
