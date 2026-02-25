@@ -2,6 +2,7 @@ package app.majodesk.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +49,8 @@ fun <T> ActsScreen(
             onDeleteClick = { act ->
                 repository.deleteAct(act.id)
                 acts = repository.getAllActs()
-            }
+            },
+            modifier = Modifier.weight(1f).fillMaxWidth()
         )
     }
 

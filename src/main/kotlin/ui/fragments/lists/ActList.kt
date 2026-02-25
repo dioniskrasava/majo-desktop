@@ -1,11 +1,13 @@
 package app.majodesk.ui.fragments.lists
 
+import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
@@ -47,10 +51,11 @@ fun ActList(
     acts: List<Act>,
     onEditClick: (Act) -> Unit,
     onDeleteClick: (Act) -> Unit,
+    modifier: Modifier = Modifier   // добавили параметр modifier
 ) {
     if (acts.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -60,18 +65,34 @@ fun ActList(
             )
         }
     } else {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(Dimens.marginElements)
-        ) {
-            items(acts) { act ->
-                ActCard(
-                    act,
-                    onEditClick,
-                    onDeleteClick
-                )
+        val listState = rememberLazyListState()   // состояние для отслеживания прокрутки
+
+        Box(modifier = modifier) {
+            LazyColumn(
+                state = listState,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 8.dp), // отступ для скроллбара
+                contentPadding = PaddingValues(Dimens.marginElements)
+            ) {
+                items(acts) { act ->
+                    ActCard(
+                        act = act,
+                        onEditClick = onEditClick,
+                        onDeleteClick = onDeleteClick
+                    )
+                }
             }
+
+            // Вертикальный скроллбар
+            VerticalScrollbar(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .width(8.dp),
+                adapter = rememberScrollbarAdapter(listState)
+            )
         }
     }
 }
