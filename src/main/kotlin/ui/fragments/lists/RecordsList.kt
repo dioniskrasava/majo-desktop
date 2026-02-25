@@ -1,9 +1,12 @@
 package app.majodesk.ui.fragments.lists
 
+import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -33,11 +36,12 @@ fun RecordsList(
     records: List<ActRecord>,
     acts: Map<Long, Act>,
     onDeleteClick: (ActRecord) -> Unit,
-    onEditClick: (ActRecord) -> Unit
+    onEditClick: (ActRecord) -> Unit,
+    modifier: Modifier = Modifier // добавили параметр modifier
 ) {
     if (records.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = modifier.fillMaxWidth().padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -46,19 +50,30 @@ fun RecordsList(
             )
         }
     } else {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(records) { record ->
-                val act = acts[record.actId]
-                RecordCard(
-                    record = record,
-                    act = act,
-                    onDeleteClick = { onDeleteClick(record) },
-                    onEditClick = { onEditClick(record) }
-                )
+        val listState = rememberLazyListState()
+        Box(modifier = modifier) { // корневой Box получает внешний модификатор
+            LazyColumn(
+                state = listState,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize() // занимает всю площадь Box
+                    .padding(end = 16.dp) // отступ для ползунка
+            ) {
+                items(records) { record ->
+                    RecordCard(
+                        record = record,
+                        act = acts[record.actId],
+                        onDeleteClick = { onDeleteClick(record) },
+                        onEditClick = { onEditClick(record) }
+                    )
+                }
             }
+            VerticalScrollbar(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .width(8.dp),
+                adapter = rememberScrollbarAdapter(listState)
+            )
         }
     }
 }

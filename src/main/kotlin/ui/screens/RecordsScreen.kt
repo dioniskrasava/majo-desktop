@@ -3,6 +3,7 @@ package app.majodesk.ui.screens
 import RecordsControls
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -104,7 +105,8 @@ fun RecordsScreen(
             },
             onEditClick = { record ->
                 recordToEdit = record
-            }
+            },
+            modifier = Modifier.weight(1f).fillMaxWidth()
         )
     }
 
