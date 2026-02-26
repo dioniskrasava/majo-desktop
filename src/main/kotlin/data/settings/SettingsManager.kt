@@ -21,4 +21,24 @@ class SettingsManager(
         settings = settings.copy(language = language)
         repository.save(settings)
     }
+
+    fun updateCardBackgroundColor(hex: String?) {
+        settings = settings.copy(cardBackgroundColor = hex)
+        repository.save(settings)
+    }
+
+    fun updateCardTitleColor(hex: String?) {
+        settings = settings.copy(cardTitleColor = hex)
+        repository.save(settings)
+    }
+
+    fun updateCardSubtitleColor(hex: String?) {
+        settings = settings.copy(cardSubtitleColor = hex)
+        repository.save(settings)
+    }
+
+    fun updateCardPadding(dp: Int?) {
+        settings = settings.copy(cardPaddingDp = dp)
+        repository.save(settings)
+    }
 }

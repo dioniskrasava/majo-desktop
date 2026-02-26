@@ -32,3 +32,4 @@ fun appColorScheme(mode: ThemeMode): ColorScheme {
         )
     }
 }
+

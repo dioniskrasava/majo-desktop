@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.majodesk.data.settings.SettingsManager
 import app.majodesk.ui.fragments.dialogs.AboutDialog
+import app.majodesk.ui.fragments.dialogs.CustomThemeDialog
 import app.majodesk.ui.localization.Lang
 import app.majodesk.ui.localization.LocalLocalizationManager
 import app.majodesk.ui.localization.stringResource
@@ -46,6 +47,7 @@ fun SettingsScreen(settingsManager: SettingsManager) {
     val localizationManager = LocalLocalizationManager.current
 
     var showAboutDialog by remember { mutableStateOf(false) }
+    var showCustomThemeDialog by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -59,8 +61,6 @@ fun SettingsScreen(settingsManager: SettingsManager) {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
-
-
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -93,7 +93,6 @@ fun SettingsScreen(settingsManager: SettingsManager) {
                 }
             }
         }
-
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -168,12 +167,54 @@ fun SettingsScreen(settingsManager: SettingsManager) {
                 }
             }
         }
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showCustomThemeDialog = true }
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Palette,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Кастомизировать тему",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+
 
     }
 
-    if (showAboutDialog) {
-        AboutDialog(
-            onDismiss = { showAboutDialog = false }
-        )
+        if (showCustomThemeDialog) {
+            CustomThemeDialog(
+                settingsManager = settingsManager,
+                onDismiss = { showCustomThemeDialog = false }
+            )
+        }
+
+        if (showAboutDialog) {
+            AboutDialog(
+                onDismiss = { showAboutDialog = false }
+            )
+        }
     }
-}
+
+
+
+

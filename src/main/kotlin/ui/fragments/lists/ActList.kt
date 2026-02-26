@@ -44,6 +44,7 @@ import app.majodesk.domain.model.DistanceUnit
 import app.majodesk.domain.model.WeightUnit
 import app.majodesk.domain.model.TimeUnit
 import app.majodesk.ui.theme.Dimens
+import app.majodesk.ui.theme.LocalAppSettings
 
 
 @Composable
@@ -99,25 +100,31 @@ fun ActList(
 
 
 @Composable
-fun ActCard(
-    act: Act,
-    onEditClick: (Act) -> Unit,
-    onDeleteClick: (Act) -> Unit
+fun ActCard(act: Act, onEditClick: (Act) -> Unit, onDeleteClick: (Act) -> Unit) {
+    val customSettings = LocalAppSettings.current
+    val backgroundColor = customSettings.cardBackgroundColor
+        ?.let { colorFromHex(it) }
+        ?: MaterialTheme.colorScheme.surfaceVariant
+    val titleColor = customSettings.cardTitleColor
+        ?.let { colorFromHex(it) }
+        ?: MaterialTheme.colorScheme.onSurface
+    val subtitleColor = customSettings.cardSubtitleColor
+        ?.let { colorFromHex(it) }
+        ?: MaterialTheme.colorScheme.onSurfaceVariant
+    val padding = customSettings.cardPaddingDp?.dp ?: 16.dp
 
-) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(padding),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // иконка
             Icon(
                 imageVector = iconFromName(act.category.iconName),
                 contentDescription = null,
@@ -125,16 +132,16 @@ fun ActCard(
                 modifier = Modifier.size(Dimens.iconLarge)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = act.name,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = titleColor
                 )
                 Text(
                     text = "${stringResource("category_label")} ${act.category.name}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = subtitleColor
                 )
 
 

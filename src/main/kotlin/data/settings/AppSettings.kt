@@ -7,5 +7,9 @@ import app.majodesk.ui.localization.Lang
 @Serializable
 data class AppSettings(
     val themeMode: ThemeMode = ThemeMode.LIGHT,
-    val language: Lang = Lang.RU
+    val language: Lang = Lang.RU,
+    val cardBackgroundColor: String? = null,
+    val cardTitleColor: String? = null,
+    val cardSubtitleColor: String? = null,
+    val cardPaddingDp: Int? = null
 )

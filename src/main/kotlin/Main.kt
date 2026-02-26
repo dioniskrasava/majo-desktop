@@ -21,6 +21,7 @@ import app.majodesk.ui.theme.appColorScheme
 import java.awt.Dimension
 import app.majodesk.data.settings.FileSettingsRepository
 import app.majodesk.data.settings.SettingsManager
+import app.majodesk.ui.theme.LocalAppSettings
 
 fun main() = application {
     val windowState = rememberWindowState(width = AppSettings.WINDOW_WIDTH, height = AppSettings.WINDOW_HEIGHT)
@@ -45,7 +46,9 @@ fun main() = application {
             AppSettings.MIN_WINDOW_WIDTH,
             AppSettings.MIN_WINDOW_HEIGHT
         )
-        CompositionLocalProvider(LocalLocalizationManager provides localizationManager) { // <-- обёртка
+        CompositionLocalProvider(LocalLocalizationManager provides localizationManager,
+                                           LocalAppSettings provides settingsManager.settings
+            ) { // <-- обёртка
             MaterialTheme( appColorScheme(settingsManager.settings.themeMode)) {
                 MainScreen(
                     actRepository = actRepository,
