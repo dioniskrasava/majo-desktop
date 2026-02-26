@@ -17,10 +17,12 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
+import app.majodesk.ui.fragments.dialogs.AddActDialog
 import app.majodesk.ui.fragments.lists.ActList
 import app.majodesk.ui.fragments.forms.AddActCard
 import app.majodesk.ui.fragments.dialogs.AddCategoryDialog
 import app.majodesk.ui.fragments.dialogs.EditActDialog
+import app.majodesk.ui.localization.stringResource
 
 @Composable
 fun <T> ActsScreen(
@@ -30,59 +32,31 @@ fun <T> ActsScreen(
     var categories by remember { mutableStateOf(repository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
     var actToEdit by remember { mutableStateOf<Act?>(null) }
-    var showAddForm by remember { mutableStateOf(false) } // новое состояние
+    var showAddDialog by remember { mutableStateOf(false) } // состояние для диалога добавления
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Форма появляется только если showAddForm == true
-            if (showAddForm) {
-                AddActCard(
-                    categories = categories,
-                    onAddCategoryClick = { showAddCategoryDialog = true },
-                    onAddClick = { name, category, type, regularity, metric ->
-                        val act = Act(
-                            id = 0,
-                            name = name,
-                            category = category,
-                            type = type,
-                            regularity = regularity,
-                            metric = metric
-                        )
-                        repository.createAct(act)
-                        acts = repository.getAllActs()
-                        showAddForm = false // скрыть форму после добавления
-                    }
-                )
-            }
+        ActList(
+            acts = acts,
+            onEditClick = { act -> actToEdit = act },
+            onDeleteClick = { act ->
+                repository.deleteAct(act.id)
+                acts = repository.getAllActs()
+            },
+            modifier = Modifier.fillMaxSize()
+        )
 
-            ActList(
-                acts = acts,
-                onEditClick = { act -> actToEdit = act },
-                onDeleteClick = { act ->
-                    repository.deleteAct(act.id)
-                    acts = repository.getAllActs()
-                },
-                modifier = Modifier.weight(1f).fillMaxWidth()
-            )
-        }
-
-        // Плавающая кнопка для открытия/закрытия формы
+        // Плавающая кнопка добавления
         FloatingActionButton(
-            onClick = { showAddForm = !showAddForm },
+            onClick = { showAddDialog = true },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(8.dp)
+                .padding(16.dp)
         ) {
-            Icon(
-                imageVector = if (showAddForm) Icons.Default.Close else Icons.Default.Add,
-                contentDescription = if (showAddForm) "Закрыть форму" else "Добавить активность"
-            )
+            Icon(Icons.Default.Add, contentDescription = stringResource("add_activity"))
         }
     }
 
+    // Диалог добавления категории
     if (showAddCategoryDialog) {
         AddCategoryDialog(
             onDismiss = { showAddCategoryDialog = false },
@@ -94,6 +68,7 @@ fun <T> ActsScreen(
         )
     }
 
+    // Диалог редактирования активности
     if (actToEdit != null) {
         EditActDialog(
             act = actToEdit!!,
@@ -103,6 +78,19 @@ fun <T> ActsScreen(
                 repository.updateAct(updatedAct)
                 acts = repository.getAllActs()
                 actToEdit = null
+            }
+        )
+    }
+
+    // Диалог добавления активности
+    if (showAddDialog) {
+        AddActDialog(
+            categories = categories,
+            onDismiss = { showAddDialog = false },
+            onConfirm = { newAct ->
+                repository.createAct(newAct)
+                acts = repository.getAllActs()
+                showAddDialog = false
             }
         )
     }
