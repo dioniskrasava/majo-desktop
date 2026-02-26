@@ -227,11 +227,14 @@ fun ActivityRow(
                 val record = recordsForAct[date]
 
                 val backgroundColor = when {
-                    act.type == ActType.VICE && record != null -> Color.Red
-                    record?.value?.let { it > 0 } == true -> myGreen
-                    else -> Color.LightGray
+                    record == null -> Color.LightGray                     // нет записи
+                    act.type == ActType.VICE -> {                          // порок
+                        if (record.value > 0) Color.Red else myGreen       // >0 – красный, иначе (0) – зелёный
+                    }
+                    else -> {                                              // остальные типы
+                        if (record.value > 0) myGreen else Color.LightGray // >0 – зелёный, иначе серый
+                    }
                 }
-
 
                 Box(
                     modifier = Modifier
@@ -248,7 +251,7 @@ fun ActivityRow(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntervalSelector(daysCount: Int, onIntervalChange: (Int) -> Unit) {
-    val options = listOf(30, 60, 90, 180, 365)
+    val options = listOf(7, 30, 60, 90, 180, 365)
     var expanded by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
