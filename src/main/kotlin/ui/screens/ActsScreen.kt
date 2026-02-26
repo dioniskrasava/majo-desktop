@@ -1,11 +1,19 @@
 package app.majodesk.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
@@ -22,36 +30,57 @@ fun <T> ActsScreen(
     var categories by remember { mutableStateOf(repository.getAllCategories()) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
     var actToEdit by remember { mutableStateOf<Act?>(null) }
+    var showAddForm by remember { mutableStateOf(false) } // новое состояние
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        AddActCard(
-            categories = categories,
-            onAddCategoryClick = { showAddCategoryDialog = true },
-            onAddClick = { name, category, type, regularity, metric ->
-                val act = Act(
-                    id = 0, // id будет присвоен в репозитории
-                    name = name,
-                    category = category,
-                    type = type,
-                    regularity = regularity,
-                    metric = metric
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Форма появляется только если showAddForm == true
+            if (showAddForm) {
+                AddActCard(
+                    categories = categories,
+                    onAddCategoryClick = { showAddCategoryDialog = true },
+                    onAddClick = { name, category, type, regularity, metric ->
+                        val act = Act(
+                            id = 0,
+                            name = name,
+                            category = category,
+                            type = type,
+                            regularity = regularity,
+                            metric = metric
+                        )
+                        repository.createAct(act)
+                        acts = repository.getAllActs()
+                        showAddForm = false // скрыть форму после добавления
+                    }
                 )
-                repository.createAct(act)
-                acts = repository.getAllActs()
             }
-        )
-        ActList(
-            acts = acts,
-            onEditClick = { act -> actToEdit = act },
-            onDeleteClick = { act ->
-                repository.deleteAct(act.id)
-                acts = repository.getAllActs()
-            },
-            modifier = Modifier.weight(1f).fillMaxWidth()
-        )
+
+            ActList(
+                acts = acts,
+                onEditClick = { act -> actToEdit = act },
+                onDeleteClick = { act ->
+                    repository.deleteAct(act.id)
+                    acts = repository.getAllActs()
+                },
+                modifier = Modifier.weight(1f).fillMaxWidth()
+            )
+        }
+
+        // Плавающая кнопка для открытия/закрытия формы
+        FloatingActionButton(
+            onClick = { showAddForm = !showAddForm },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(8.dp)
+        ) {
+            Icon(
+                imageVector = if (showAddForm) Icons.Default.Close else Icons.Default.Add,
+                contentDescription = if (showAddForm) "Закрыть форму" else "Добавить активность"
+            )
+        }
     }
 
     if (showAddCategoryDialog) {
