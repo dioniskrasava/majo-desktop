@@ -1,11 +1,16 @@
 package app.majodesk.ui.screens
 
 import RecordsControls
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -66,48 +71,56 @@ fun RecordsScreen(
         filteredRecords.drop(from).take(itemsPerPage)
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Кнопка добавления записи
-        Button(
-            onClick = { showAddDialog = true },
-            modifier = Modifier.padding(bottom = 16.dp)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(stringResource("add_record"))
+            // Кнопка Button удалена
+            RecordsControls(
+                selectedPeriod = selectedPeriod,
+                onPeriodChange = { period ->
+                    selectedPeriod = period
+                    currentPage = 0
+                },
+                itemsPerPage = itemsPerPage,
+                onItemsPerPageChange = { perPage ->
+                    itemsPerPage = perPage
+                    currentPage = 0
+                },
+                currentPage = currentPage,
+                totalPages = totalPages,
+                onPageChange = { newPage -> currentPage = newPage }
+            )
+
+            RecordsList(
+                records = pagedRecords,
+                acts = actsMap,
+                onDeleteClick = { record ->
+                    recordRepository.deleteRecord(record.id)
+                    records = recordRepository.getAllRecords()
+                },
+                onEditClick = { record ->
+                    recordToEdit = record
+                },
+                modifier = Modifier.weight(1f).fillMaxWidth()
+            )
         }
 
-        // Элементы управления фильтрацией и пагинацией
-        RecordsControls(
-            selectedPeriod = selectedPeriod,
-            onPeriodChange = { period ->
-                selectedPeriod = period
-                currentPage = 0 // сбрасываем на первую страницу при смене периода
-            },
-            itemsPerPage = itemsPerPage,
-            onItemsPerPageChange = { perPage ->
-                itemsPerPage = perPage
-                currentPage = 0
-            },
-            currentPage = currentPage,
-            totalPages = totalPages,
-            onPageChange = { newPage -> currentPage = newPage }
-        )
-
-        // Список записей
-        RecordsList(
-            records = pagedRecords,
-            acts = actsMap,
-            onDeleteClick = { record ->
-                recordRepository.deleteRecord(record.id)
-                records = recordRepository.getAllRecords()
-            },
-            onEditClick = { record ->
-                recordToEdit = record
-            },
-            modifier = Modifier.weight(1f).fillMaxWidth()
-        )
+        // FloatingActionButton для добавления записи
+        FloatingActionButton(
+            onClick = { showAddDialog = true },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource("add_record")
+            )
+        }
     }
 
     // Диалоги (без изменений)
