@@ -44,7 +44,21 @@ fun AddCategoryDialog(
         "fitness_center" to "icon_fitness_center",
         "menu_book" to "icon_menu_book",
         "category" to "icon_category",
-        "sports_tennis" to "icon_sports_tennis"
+
+        // новые
+        "home" to "icon_home",
+        "work" to "icon_work",
+        "school" to "icon_school",
+        "favorite" to "icon_favorite",
+        "star" to "icon_star",
+        "shopping_cart" to "icon_shopping_cart",
+        "restaurant" to "icon_restaurant",
+        "directions_run" to "icon_directions_run",
+        "music_note" to "icon_music_note",
+        "movie" to "icon_movie",
+        "palette" to "icon_palette",
+        "pets" to "icon_pets",
+        "sports_tennis" to "icon_sports_tennis",
     )
     // Пары (hex, ключ локализации)
     val colorOptions = listOf(

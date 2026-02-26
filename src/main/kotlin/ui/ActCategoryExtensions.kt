@@ -9,8 +9,21 @@ fun iconFromName(name: String): ImageVector = when (name) {
     "fitness_center" -> Icons.Default.FitnessCenter
     "menu_book" -> Icons.Default.MenuBook
     "category" -> Icons.Default.Category
+
+    // новые
+    "home" -> Icons.Default.Home
+    "work" -> Icons.Default.Work
+    "school" -> Icons.Default.School
+    "favorite" -> Icons.Default.Favorite
+    "star" -> Icons.Default.Star
+    "shopping_cart" -> Icons.Default.ShoppingCart
+    "restaurant" -> Icons.Default.Restaurant
+    "directions_run" -> Icons.Default.DirectionsRun
+    "music_note" -> Icons.Default.MusicNote
+    "movie" -> Icons.Default.Movie
+    "palette" -> Icons.Default.Palette
+    "pets" -> Icons.Default.Pets
     "sports_tennis" -> Icons.Default.SportsTennis
-    // ... добавьте другие
     else -> Icons.Default.Category
 }
 

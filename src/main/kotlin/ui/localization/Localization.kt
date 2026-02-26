@@ -122,7 +122,19 @@ private val ru = mapOf(
     "description" to "Описание",
     "description_application" to "Данное приложение необходимо для ведения заметок по активностям в течении дня." +
             "\nВ целом необходимо для логирования разного рода активностей." +
-            "\nИ прочей ненужной лабуды."
+            "\nИ прочей ненужной лабуды.",
+    "icon_home" to "Дом",
+    "icon_work" to "Работа",
+    "icon_school" to "Учёба",
+    "icon_favorite" to "Избранное",
+    "icon_star" to "Звезда",
+    "icon_shopping_cart" to "Покупки",
+    "icon_restaurant" to "Еда",
+    "icon_directions_run" to "Бег",
+    "icon_music_note" to "Музыка",
+    "icon_movie" to "Кино",
+    "icon_palette" to "Рисование",
+    "icon_pets" to "Животные"
 )
 
 private val en = mapOf(
@@ -211,6 +223,18 @@ private val en = mapOf(
     "description" to "Description",
     "description_application" to "Данное приложение необходимо для ведения заметок по активностям в течении дня." +
             "\nВ целом необходимо для логирования разного рода активностей." +
-            "\nИ прочей ненужной лабуды."
+            "\nИ прочей ненужной лабуды.",
+    "icon_home" to "Home",
+    "icon_work" to "Work",
+    "icon_school" to "School",
+    "icon_favorite" to "Favorite",
+    "icon_star" to "Star",
+    "icon_shopping_cart" to "Shopping",
+    "icon_restaurant" to "Restaurant",
+    "icon_directions_run" to "Run",
+    "icon_music_note" to "Music",
+    "icon_movie" to "Movie",
+    "icon_palette" to "Palette",
+    "icon_pets" to "Pets"
 
 )
