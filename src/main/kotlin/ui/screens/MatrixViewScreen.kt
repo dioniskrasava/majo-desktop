@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.times
 import app.majodesk.data.matrix.MatrixConfig
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActRecord
+import app.majodesk.domain.model.ActType
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.ui.fragments.dialogs.AddRecordDialog
@@ -224,12 +225,19 @@ fun ActivityRow(
         ) {
             dates.forEach { date ->
                 val record = recordsForAct[date]
-                val isGreen = record != null && record.value > 0
+
+                val backgroundColor = when {
+                    act.type == ActType.VICE && record != null -> Color.Red
+                    record?.value?.let { it > 0 } == true -> myGreen
+                    else -> Color.LightGray
+                }
+
+
                 Box(
                     modifier = Modifier
                         .size(cellWidth)
                         .clip(RoundedCornerShape(4.dp))
-                        .background(if (isGreen) myGreen else Color.LightGray)
+                        .background(backgroundColor)
                         .clickable { onCellClick(date) }
                 )
             }
