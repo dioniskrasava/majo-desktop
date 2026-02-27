@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.dialogs
+package app.majodesk.presentation.core
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

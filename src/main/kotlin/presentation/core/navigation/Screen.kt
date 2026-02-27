@@ -1,4 +1,4 @@
-package app.majodesk.presentation.navigation
+package app.majodesk.presentation.core.navigation
 
 sealed class Screen(val route: String) {
     object Activities : Screen("activities")

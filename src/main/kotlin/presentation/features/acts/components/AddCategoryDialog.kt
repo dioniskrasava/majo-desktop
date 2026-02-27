@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.dialogs
+package app.majodesk.presentation.features.acts.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.presentation.colorFromHex
 import app.majodesk.presentation.iconFromName
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.localization.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

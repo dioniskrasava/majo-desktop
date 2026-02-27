@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
-import app.majodesk.presentation.fragments.dialogs.AddActDialog
-import app.majodesk.presentation.fragments.lists.ActList
-import app.majodesk.presentation.fragments.dialogs.AddCategoryDialog
-import app.majodesk.presentation.fragments.dialogs.EditActDialog
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.features.acts.components.AddActDialog
+import app.majodesk.presentation.features.acts.components.ActList
+import app.majodesk.presentation.features.acts.components.AddCategoryDialog
+import app.majodesk.presentation.features.acts.components.EditActDialog
+import app.majodesk.presentation.core.localization.stringResource
 
 @Composable
 fun <T> ActsScreen(

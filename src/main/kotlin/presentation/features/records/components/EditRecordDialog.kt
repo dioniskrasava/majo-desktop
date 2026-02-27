@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.dialogs
+package app.majodesk.presentation.features.records.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -7,7 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActRecord
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.DateTimePickerDialog
+import app.majodesk.presentation.core.localization.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

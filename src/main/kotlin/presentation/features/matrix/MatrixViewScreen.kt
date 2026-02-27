@@ -28,8 +28,8 @@ import app.majodesk.domain.model.ActRecord
 import app.majodesk.domain.model.ActType
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.ActRecordRepository
-import app.majodesk.presentation.fragments.dialogs.AddRecordDialog
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.features.records.components.AddRecordDialog
+import app.majodesk.presentation.core.localization.stringResource
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 

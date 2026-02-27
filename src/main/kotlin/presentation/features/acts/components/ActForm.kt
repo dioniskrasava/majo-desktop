@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.forms
+package app.majodesk.presentation.features.acts.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActCategory
 import app.majodesk.domain.model.ActType
 import app.majodesk.domain.model.Metric
-import app.majodesk.presentation.state.ActFormState
+import app.majodesk.presentation.features.acts.ActFormState
 
 @Composable
 fun ActForm(

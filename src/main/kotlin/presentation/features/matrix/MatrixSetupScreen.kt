@@ -16,7 +16,7 @@ import app.majodesk.domain.model.Act
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.presentation.colorFromHex
 import app.majodesk.presentation.iconFromName
-import app.majodesk.presentation.theme.Dimens
+import app.majodesk.presentation.core.theme.Dimens
 
 @Composable
 fun MatrixSetupScreen(

@@ -1,4 +1,4 @@
-package app.majodesk.presentation.localization
+package app.majodesk.presentation.core.localization
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf

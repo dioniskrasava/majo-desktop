@@ -3,8 +3,8 @@ package app.majodesk.data.settings
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import app.majodesk.presentation.localization.Lang
-import app.majodesk.presentation.theme.ThemeMode
+import app.majodesk.presentation.core.localization.Lang
+import app.majodesk.presentation.core.theme.ThemeMode
 
 class SettingsManager(
     private val repository: SettingsRepository

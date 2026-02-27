@@ -10,14 +10,14 @@ import androidx.compose.ui.window.rememberWindowState
 import app.majodesk.data.repository.FileActRecordRepository
 import app.majodesk.data.repository.FileActRepository
 import app.majodesk.presentation.AppSettings
-import app.majodesk.presentation.localization.LocalLocalizationManager
-import app.majodesk.presentation.localization.LocalizationManager
+import app.majodesk.presentation.core.localization.LocalLocalizationManager
+import app.majodesk.presentation.core.localization.LocalizationManager
 import app.majodesk.presentation.features.main.MainScreen
-import app.majodesk.presentation.theme.appColorScheme
+import app.majodesk.presentation.core.theme.appColorScheme
 import java.awt.Dimension
 import app.majodesk.data.settings.FileSettingsRepository
 import app.majodesk.data.settings.SettingsManager
-import app.majodesk.presentation.theme.LocalAppSettings
+import app.majodesk.presentation.core.theme.LocalAppSettings
 
 fun main() = application {
     val windowState = rememberWindowState(width = AppSettings.WINDOW_WIDTH, height = AppSettings.WINDOW_HEIGHT)

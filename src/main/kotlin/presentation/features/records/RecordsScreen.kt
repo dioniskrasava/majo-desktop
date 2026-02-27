@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.ActRecord
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.domain.repository.ActRepository
-import app.majodesk.presentation.fragments.RecordsControls
-import app.majodesk.presentation.fragments.dialogs.AddRecordDialog
-import app.majodesk.presentation.fragments.dialogs.EditRecordDialog
-import app.majodesk.presentation.fragments.lists.RecordsList
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.features.records.components.RecordsControls
+import app.majodesk.presentation.features.records.components.AddRecordDialog
+import app.majodesk.presentation.features.records.components.EditRecordDialog
+import app.majodesk.presentation.features.records.components.RecordsList
+import app.majodesk.presentation.core.localization.stringResource
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.days

@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.dialogs
+package app.majodesk.presentation.features.records.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -13,7 +13,8 @@ import app.majodesk.domain.model.Metric
 import app.majodesk.domain.model.DistanceUnit
 import app.majodesk.domain.model.WeightUnit
 import app.majodesk.domain.model.TimeUnit
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.DateTimePickerDialog
+import app.majodesk.presentation.core.localization.stringResource
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 

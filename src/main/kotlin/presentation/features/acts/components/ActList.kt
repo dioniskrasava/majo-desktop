@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.lists
+package app.majodesk.presentation.features.acts.components
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.Arrangement
@@ -39,12 +39,12 @@ import app.majodesk.domain.model.ActType
 import app.majodesk.domain.model.Metric
 import app.majodesk.presentation.colorFromHex
 import app.majodesk.presentation.iconFromName
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.localization.stringResource
 import app.majodesk.domain.model.DistanceUnit
 import app.majodesk.domain.model.WeightUnit
 import app.majodesk.domain.model.TimeUnit
-import app.majodesk.presentation.theme.Dimens
-import app.majodesk.presentation.theme.LocalAppSettings
+import app.majodesk.presentation.core.theme.Dimens
+import app.majodesk.presentation.core.theme.LocalAppSettings
 
 
 @Composable

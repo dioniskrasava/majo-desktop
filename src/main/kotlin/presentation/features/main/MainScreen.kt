@@ -31,8 +31,8 @@ import app.majodesk.presentation.features.acts.ActsScreen
 import app.majodesk.presentation.features.records.RecordsScreen
 import app.majodesk.presentation.features.settings.SettingsScreen
 import app.majodesk.presentation.features.statistics.StatisticsScreen
-import app.majodesk.presentation.localization.stringResource
-import app.majodesk.presentation.navigation.Screen
+import app.majodesk.presentation.core.localization.stringResource
+import app.majodesk.presentation.core.navigation.Screen
 import app.majodesk.presentation.features.matrix.MatrixScreen
 
 @Composable

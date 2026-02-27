@@ -33,12 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.majodesk.data.settings.SettingsManager
-import app.majodesk.presentation.fragments.dialogs.AboutDialog
-import app.majodesk.presentation.fragments.dialogs.CustomThemeDialog
-import app.majodesk.presentation.localization.Lang
-import app.majodesk.presentation.localization.LocalLocalizationManager
-import app.majodesk.presentation.localization.stringResource
-import app.majodesk.presentation.theme.ThemeMode
+import app.majodesk.presentation.features.settings.components.AboutDialog
+import app.majodesk.presentation.features.settings.components.CustomThemeDialog
+import app.majodesk.presentation.core.localization.Lang
+import app.majodesk.presentation.core.localization.LocalLocalizationManager
+import app.majodesk.presentation.core.localization.stringResource
+import app.majodesk.presentation.core.theme.ThemeMode
 
 @Composable
 fun SettingsScreen(settingsManager: SettingsManager) {

@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.forms
+package app.majodesk.presentation.features.acts.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.majodesk.domain.model.*
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.localization.stringResource
 import app.majodesk.domain.model.MetricType
 
 @Composable

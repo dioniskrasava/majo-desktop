@@ -1,4 +1,4 @@
-package app.majodesk.presentation.theme
+package app.majodesk.presentation.core.theme
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme

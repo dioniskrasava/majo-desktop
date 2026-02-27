@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.dialogs
+package app.majodesk.presentation.features.acts.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -10,9 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import app.majodesk.domain.model.Act
 import app.majodesk.domain.model.ActCategory
-import app.majodesk.presentation.fragments.forms.ActForm
-import app.majodesk.presentation.localization.stringResource
-import app.majodesk.presentation.state.ActFormState
+import app.majodesk.presentation.core.localization.stringResource
+import app.majodesk.presentation.features.acts.ActFormState
 
 @Composable
 fun AddActDialog(

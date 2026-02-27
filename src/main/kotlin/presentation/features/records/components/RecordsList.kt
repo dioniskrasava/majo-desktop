@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments.lists
+package app.majodesk.presentation.features.records.components
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import app.majodesk.domain.model.WeightUnit
 import app.majodesk.domain.model.TimeUnit
 import app.majodesk.presentation.colorFromHex
 import app.majodesk.presentation.iconFromName
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.localization.stringResource
 import kotlinx.datetime.*
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import java.time.format.DateTimeFormatter

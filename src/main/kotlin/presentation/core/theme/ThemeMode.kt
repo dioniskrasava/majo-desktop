@@ -1,4 +1,4 @@
-package app.majodesk.presentation.theme
+package app.majodesk.presentation.core.theme
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package app.majodesk.presentation.fragments
+package app.majodesk.presentation.features.records.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.core.localization.stringResource
 import app.majodesk.presentation.features.records.Period
 
 @OptIn(ExperimentalMaterial3Api::class)
