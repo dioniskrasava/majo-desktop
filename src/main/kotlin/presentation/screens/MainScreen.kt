@@ -1,0 +1,112 @@
+package app.majodesk.presentation.screens
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import app.majodesk.data.settings.SettingsManager
+import app.majodesk.domain.repository.ActRecordRepository
+import app.majodesk.domain.repository.ActRepository
+import app.majodesk.domain.repository.CategoryRepository
+import app.majodesk.presentation.localization.stringResource
+import app.majodesk.presentation.navigation.Screen
+
+@Composable
+fun <T> MainScreen(
+    actRepository: T,           // для активностей и категорий
+    recordRepository: ActRecordRepository,   // для записей
+    settingsManager: SettingsManager
+) where T : ActRepository, T : CategoryRepository {
+
+    val settingsState = settingsManager.settings
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Records) }
+
+    Row(modifier = Modifier.fillMaxSize()) {
+
+
+        // Левая навигационная панель
+        NavigationRail(
+            header = {
+                // Можно добавить логотип или заголовок
+            },
+            modifier = Modifier.border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp, topStart = 8.dp, bottomStart = 8.dp),
+            ),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ) {
+            NavigationRailItem(
+                selected = currentScreen == Screen.Matrix,
+                onClick = { currentScreen = Screen.Matrix },
+                icon = { Icon(Icons.Default.GridView, contentDescription = "Матрица") }, // или другая иконка
+                label = { Text("Матрица") }
+            )
+            NavigationRailItem(
+                selected = currentScreen == Screen.Records,
+                onClick = { currentScreen = Screen.Records },
+                icon = { Icon(Icons.Default.History, contentDescription = "Логи") },
+                label = { Text("Логи") } // можно добавить в локализацию
+            )
+            NavigationRailItem(
+                selected = currentScreen == Screen.Activities,
+                onClick = { currentScreen = Screen.Activities },
+                icon = { Icon(Icons.Default.List, contentDescription = "Активности") },
+                label = { Text(stringResource("activities")) }
+            )
+            NavigationRailItem(
+                selected = currentScreen == Screen.Statistics,
+                onClick = { currentScreen = Screen.Statistics },
+                icon = { Icon(Icons.Default.ShowChart, contentDescription = "Статистика") },
+                label = { Text(stringResource("statistics")) }
+            )
+
+            NavigationRailItem(
+                selected = currentScreen == Screen.Settings,
+                onClick = { currentScreen = Screen.Settings },
+                icon = { Icon(Icons.Default.Settings, contentDescription = "Настройки") },
+                label = { Text(stringResource("settings")) }
+            )
+        }
+
+        // Контентная область – отображаем нужный экран
+        Surface(modifier = Modifier.weight(1f)) {
+            when (currentScreen) {
+                Screen.Activities -> ActsScreen(
+                    repository = actRepository,
+                    // Передаём также список категорий, но лучше использовать репозиторий напрямую
+                )
+                Screen.Statistics -> StatisticsScreen()
+                Screen.Settings -> SettingsScreen(settingsManager)
+                Screen.Records -> RecordsScreen(
+                    actRepository = actRepository,      // repository должен быть ActRepository
+                    recordRepository = recordRepository // нужно передать дополнительно
+                )
+                Screen.Matrix -> MatrixScreen(
+                    actRepository = actRepository,
+                    recordRepository = recordRepository
+                )
+            }
+        }
+    }
+}

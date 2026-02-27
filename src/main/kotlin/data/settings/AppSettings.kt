@@ -1,8 +1,8 @@
 package app.majodesk.data.settings
 
 import kotlinx.serialization.Serializable
-import app.majodesk.ui.theme.ThemeMode
-import app.majodesk.ui.localization.Lang
+import app.majodesk.presentation.theme.ThemeMode
+import app.majodesk.presentation.localization.Lang
 
 @Serializable
 data class AppSettings(

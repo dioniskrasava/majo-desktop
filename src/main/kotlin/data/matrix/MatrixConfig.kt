@@ -1,4 +1,5 @@
 package app.majodesk.data.matrix
+
 import kotlinx.serialization.Serializable
 
 @Serializable

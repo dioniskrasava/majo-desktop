@@ -3,25 +3,21 @@ package app.majodesk
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import app.majodesk.data.repository.FileActRecordRepository
 import app.majodesk.data.repository.FileActRepository
-import app.majodesk.ui.AppSettings
-import app.majodesk.ui.localization.LocalLocalizationManager
-import app.majodesk.ui.localization.LocalizationManager
-import app.majodesk.ui.screens.MainScreen
-import app.majodesk.ui.theme.ThemeMode
-import app.majodesk.ui.theme.appColorScheme
+import app.majodesk.presentation.AppSettings
+import app.majodesk.presentation.localization.LocalLocalizationManager
+import app.majodesk.presentation.localization.LocalizationManager
+import app.majodesk.presentation.screens.MainScreen
+import app.majodesk.presentation.theme.appColorScheme
 import java.awt.Dimension
 import app.majodesk.data.settings.FileSettingsRepository
 import app.majodesk.data.settings.SettingsManager
-import app.majodesk.ui.theme.LocalAppSettings
+import app.majodesk.presentation.theme.LocalAppSettings
 
 fun main() = application {
     val windowState = rememberWindowState(width = AppSettings.WINDOW_WIDTH, height = AppSettings.WINDOW_HEIGHT)
