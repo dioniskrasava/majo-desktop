@@ -1,4 +1,4 @@
-package app.majodesk.presentation.screens
+package app.majodesk.presentation.features.matrix
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

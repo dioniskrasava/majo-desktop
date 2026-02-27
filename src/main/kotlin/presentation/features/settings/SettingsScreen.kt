@@ -1,4 +1,4 @@
-package app.majodesk.presentation.screens
+package app.majodesk.presentation.features.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

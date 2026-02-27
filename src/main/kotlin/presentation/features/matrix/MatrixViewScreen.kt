@@ -1,4 +1,4 @@
-package app.majodesk.presentation.screens
+package app.majodesk.presentation.features.matrix
 
 import androidx.compose.foundation.HorizontalScrollbar
 import androidx.compose.foundation.ScrollState

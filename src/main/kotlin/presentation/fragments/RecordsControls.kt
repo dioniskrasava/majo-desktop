@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.majodesk.presentation.localization.stringResource
-import app.majodesk.presentation.screens.Period
+import app.majodesk.presentation.features.records.Period
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

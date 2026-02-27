@@ -1,4 +1,4 @@
-package app.majodesk.presentation.screens
+package app.majodesk.presentation.features.main
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -27,8 +27,13 @@ import app.majodesk.data.settings.SettingsManager
 import app.majodesk.domain.repository.ActRecordRepository
 import app.majodesk.domain.repository.ActRepository
 import app.majodesk.domain.repository.CategoryRepository
+import app.majodesk.presentation.features.acts.ActsScreen
+import app.majodesk.presentation.features.records.RecordsScreen
+import app.majodesk.presentation.features.settings.SettingsScreen
+import app.majodesk.presentation.features.statistics.StatisticsScreen
 import app.majodesk.presentation.localization.stringResource
 import app.majodesk.presentation.navigation.Screen
+import app.majodesk.presentation.features.matrix.MatrixScreen
 
 @Composable
 fun <T> MainScreen(

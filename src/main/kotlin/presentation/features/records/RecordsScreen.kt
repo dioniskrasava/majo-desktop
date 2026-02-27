@@ -1,4 +1,4 @@
-package app.majodesk.presentation.screens
+package app.majodesk.presentation.features.records
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -12,7 +12,7 @@ import app.majodesk.data.repository.FileActRepository
 import app.majodesk.presentation.AppSettings
 import app.majodesk.presentation.localization.LocalLocalizationManager
 import app.majodesk.presentation.localization.LocalizationManager
-import app.majodesk.presentation.screens.MainScreen
+import app.majodesk.presentation.features.main.MainScreen
 import app.majodesk.presentation.theme.appColorScheme
 import java.awt.Dimension
 import app.majodesk.data.settings.FileSettingsRepository
