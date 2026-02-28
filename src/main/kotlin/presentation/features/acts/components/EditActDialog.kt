@@ -18,7 +18,8 @@ fun EditActDialog(
     act: Act,
     categories: List<ActCategory>,
     onDismiss: () -> Unit,
-    onConfirm: (Act) -> Unit
+    onConfirm: (Act) -> Unit,
+    showAddCategory: () -> Unit
 ) {
     var formState by remember {
         mutableStateOf(
@@ -44,7 +45,7 @@ fun EditActDialog(
                 onRegularityChange = { formState = formState.copy(regularity = it) },
                 onMetricChange = { formState = formState.copy(metric = it) },
                 categories = categories,
-                onAddCategoryClick = null  // не показываем пункт добавления категории
+                onAddCategoryClick = showAddCategory  // не показываем пункт добавления категории
             )
         },
         confirmButton = {

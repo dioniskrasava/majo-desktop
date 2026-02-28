@@ -17,7 +17,8 @@ import app.majodesk.presentation.features.acts.ActFormState
 fun AddActDialog(
     categories: List<ActCategory>,
     onDismiss: () -> Unit,
-    onConfirm: (Act) -> Unit
+    onConfirm: (Act) -> Unit,
+    showAddCategory: () -> Unit
 ) {
     var formState by remember {
         mutableStateOf(ActFormState()) // начальное состояние с пустыми полями
@@ -35,7 +36,7 @@ fun AddActDialog(
                 onRegularityChange = { formState = formState.copy(regularity = it) },
                 onMetricChange = { formState = formState.copy(metric = it) },
                 categories = categories,
-                onAddCategoryClick = null // или можно передать действие, но проще пока опустить
+                onAddCategoryClick = showAddCategory // ?
             )
         },
         confirmButton = {

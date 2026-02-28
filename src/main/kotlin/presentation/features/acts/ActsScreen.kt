@@ -74,7 +74,8 @@ fun <T> ActsScreen(
                 repository.updateAct(updatedAct)
                 acts = repository.getAllActs()
                 actToEdit = null
-            }
+            },
+            showAddCategory = {showAddCategoryDialog = true}
         )
     }
 
@@ -87,7 +88,8 @@ fun <T> ActsScreen(
                 repository.createAct(newAct)
                 acts = repository.getAllActs()
                 showAddDialog = false
-            }
+            },
+            showAddCategory = {showAddCategoryDialog = true}
         )
     }
 }
