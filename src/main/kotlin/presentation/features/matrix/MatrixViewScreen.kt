@@ -33,6 +33,14 @@ import app.majodesk.presentation.core.localization.stringResource
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 
+/**
+ * Экран отображения матрицы с активностями по дням.
+ *
+ * @param config конфигурация (порядок активностей)
+ * @param actRepository репозиторий для получения данных об активностях
+ * @param recordRepository репозиторий для получения записей и добавления новых
+ * @param onReconfigure действие при нажатии кнопки "Настроить матрицу"
+ */
 @Composable
 fun MatrixViewScreen(
     config: MatrixConfig,
@@ -40,11 +48,23 @@ fun MatrixViewScreen(
     recordRepository: ActRecordRepository,
     onReconfigure: () -> Unit
 ) {
+    // Сопоставляем id активностей с объектами Act для быстрого доступа
     val actsMap = remember { actRepository.getAllActs().associateBy { it.id } }
+
+    // Отфильтрованный список активностей в порядке, заданном конфигурацией
     val orderedActs = config.orderedActivityIds.mapNotNull { actsMap[it] }
+
+    // Состояние для хранения всех записей (обновляется после добавления/удаления)
     var records by remember { mutableStateOf(recordRepository.getAllRecords()) }
+
+    // Количество отображаемых дней (можно менять через селектор внизу)
     var daysCount by remember { mutableStateOf(30) }
+
+    // Сегодняшняя дата
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+
+
     val dates = (0 until daysCount).map { offset ->
         today.minus(offset, DateTimeUnit.DAY)
     }.reversed()

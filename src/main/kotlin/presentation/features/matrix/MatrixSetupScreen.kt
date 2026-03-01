@@ -18,12 +18,23 @@ import app.majodesk.presentation.colorFromHex
 import app.majodesk.presentation.iconFromName
 import app.majodesk.presentation.core.theme.Dimens
 
+
+/**
+ * Экран, где пользователь выбирает и упорядочивает активности для матрицы.
+ *
+ * @param actRepository репозиторий для получения всех активностей
+ * @param onConfigSaved callback, вызываемый при сохранении порядка (передаёт готовую конфигурацию)
+ */
 @Composable
 fun MatrixSetupScreen(
     actRepository: ActRepository,
     onConfigSaved: (MatrixConfig) -> Unit
 ) {
+
+    // Получаем все активности из репозитория
     val allActs = remember { actRepository.getAllActs() }
+
+    // Текущий порядок активностей (изменяемый список)
     var orderedActs by remember { mutableStateOf(allActs) }
 
     Column(
@@ -38,6 +49,7 @@ fun MatrixSetupScreen(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
+        // Список активностей с возможностью перемещения
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.weight(1f)
@@ -47,6 +59,7 @@ fun MatrixSetupScreen(
                     act = act,
                     onMoveUp = {
                         if (index > 0) {
+                            // Меняем местами текущий элемент с предыдущим
                             orderedActs = orderedActs.toMutableList().apply {
                                 val temp = this[index]
                                 this[index] = this[index - 1]
@@ -56,6 +69,7 @@ fun MatrixSetupScreen(
                     },
                     onMoveDown = {
                         if (index < orderedActs.lastIndex) {
+                            // Меняем местами текущий элемент со следующим
                             orderedActs = orderedActs.toMutableList().apply {
                                 val temp = this[index]
                                 this[index] = this[index + 1]
@@ -69,6 +83,7 @@ fun MatrixSetupScreen(
             }
         }
 
+        // Кнопка создания матрицы с текущим порядком
         Button(
             onClick = {
                 val config = MatrixConfig(orderedActs.map { it.id })
@@ -83,6 +98,16 @@ fun MatrixSetupScreen(
     }
 }
 
+
+/**
+ * Элемент списка для одной активности в окне настройки.
+ *
+ * @param act активность
+ * @param onMoveUp действие при нажатии "вверх"
+ * @param onMoveDown действие при нажатии "вниз"
+ * @param isFirst является ли элемент первым (кнопка "вверх" неактивна)
+ * @param isLast является ли элемент последним (кнопка "вниз" неактивна)
+ */
 @Composable
 fun ActivityOrderItem(
     act: Act,
@@ -101,6 +126,7 @@ fun ActivityOrderItem(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Иконка категории
             Icon(
                 imageVector = iconFromName(act.category.iconName),
                 contentDescription = null,
@@ -108,6 +134,8 @@ fun ActivityOrderItem(
                 modifier = Modifier.size(Dimens.iconLarge)
             )
             Spacer(modifier = Modifier.width(16.dp))
+
+            // Название и категория активности
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = act.name, style = MaterialTheme.typography.titleMedium)
                 Text(
@@ -116,6 +144,8 @@ fun ActivityOrderItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+
+            // Кнопки перемещения
             Row {
                 IconButton(onClick = onMoveUp, enabled = !isFirst) {
                     Icon(Icons.Default.ArrowUpward, contentDescription = "Вверх")
