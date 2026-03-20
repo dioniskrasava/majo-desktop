@@ -134,7 +134,12 @@ private val ru = mapOf(
     "icon_music_note" to "Музыка",
     "icon_movie" to "Кино",
     "icon_palette" to "Рисование",
-    "icon_pets" to "Животные"
+    "icon_pets" to "Животные",
+    "stats_total_records" to "Всего записей",
+    "stats_by_activity" to "По активностям",
+    "stats_no_data" to "Нет данных за выбранный период",
+    "stats_records_count" to "Записей",
+    "stats_total_value" to "Сумма"
 )
 
 private val en = mapOf(
@@ -235,6 +240,11 @@ private val en = mapOf(
     "icon_music_note" to "Music",
     "icon_movie" to "Movie",
     "icon_palette" to "Palette",
-    "icon_pets" to "Pets"
+    "icon_pets" to "Pets",
+    "stats_total_records" to "Total records",
+    "stats_by_activity" to "By activity",
+    "stats_no_data" to "No data for selected period",
+    "stats_records_count" to "Records",
+    "stats_total_value" to "Total value"
 
 )

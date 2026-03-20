@@ -20,8 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.majodesk.presentation.core.Period
 import app.majodesk.presentation.core.localization.stringResource
-import app.majodesk.presentation.features.records.Period
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,16 +130,4 @@ fun RecordsControls(
             }
         }
     }
-}
-
-// Вспомогательная функция для получения ключа локализации периода
-private fun Period.stringKey(): String = when (this) {
-    Period.DAY -> "period_day"
-    Period.THREE_DAYS -> "period_3days"
-    Period.WEEK -> "period_week"
-    Period.MONTH -> "period_month"
-    Period.THREE_MONTHS -> "period_3months"
-    Period.HALF_YEAR -> "period_halfyear"
-    Period.YEAR -> "period_year"
-    Period.ALL -> "period_all"
 }

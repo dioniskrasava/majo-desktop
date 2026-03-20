@@ -101,7 +101,10 @@ fun <T> MainScreen(
                     repository = actRepository,
                     // Передаём также список категорий, но лучше использовать репозиторий напрямую
                 )
-                Screen.Statistics -> StatisticsScreen()
+                Screen.Statistics -> StatisticsScreen(
+                    actRepository = actRepository,
+                    recordRepository = recordRepository
+                )
                 Screen.Settings -> SettingsScreen(settingsManager)
                 Screen.Records -> RecordsScreen(
                     actRepository = actRepository,      // repository должен быть ActRepository
